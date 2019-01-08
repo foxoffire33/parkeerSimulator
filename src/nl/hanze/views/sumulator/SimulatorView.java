@@ -1,8 +1,14 @@
-package nl.hanze;
+package nl.hanze.views.sumulator;
+
+import nl.hanze.Car;
+import nl.hanze.Location;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dit is een Jframe dus een venster
+ */
 public class SimulatorView extends JFrame {
     private CarParkView carParkView;
     private int numberOfFloors;
@@ -187,6 +193,7 @@ public class SimulatorView extends JFrame {
                         Location location = new Location(floor, row, place);
                         Car car = getCarAt(location);
                         Color color = car == null ? Color.white : car.getColor();
+
                         drawPlace(graphics, location, color);
                     }
                 }

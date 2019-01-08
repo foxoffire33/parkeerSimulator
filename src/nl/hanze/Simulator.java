@@ -1,5 +1,8 @@
 package nl.hanze;
 
+import nl.hanze.views.sumulator.SimulatorView;
+import nl.hanze.controllers.*;
+
 import java.util.Random;
 
 public class Simulator {
@@ -34,7 +37,8 @@ public class Simulator {
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(3, 6, 30);
+        simulatorView = new SimulatorView(8, 6, 30);
+        simulatorView = new SimulatorController().getSimulatorView();
     }
 
     public void run() {
