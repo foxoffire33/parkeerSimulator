@@ -9,9 +9,11 @@ public class FloorController {
     private FloorModel model;
     private FloorViewIndex view;
 
-    public FloorController() {
-        this.model = new FloorModel(FloorEnum.FLOOR_TYPE_NONE, 0);
+    public FloorController(int id) {
+        this.model = new FloorModel(FloorEnum.FLOOR_TYPE_NONE, id);
+        this.model.setId(id);
         this.view = new FloorViewIndex(this.model);
+        this.model.setNumberOfRows(6);
     }
 
     public FloorViewIndex getView() {

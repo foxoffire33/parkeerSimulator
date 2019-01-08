@@ -6,11 +6,12 @@ public class FloorModel {
 
     private FloorEnum type;
     private int id;
-    private int numberOfRows = 2;
+    private int numberOfRows = 3;
     private int numberOfPlaces = 30;
 
     public FloorModel(FloorEnum type, int id) {
         this.type = type;
+        this.id = id;
     }
 
     public int getId() {

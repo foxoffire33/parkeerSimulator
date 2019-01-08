@@ -11,20 +11,23 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //SimulatorController simulatorController = new SimulatorController();
-//        JFrame frame = new JFrame();
-//
-//        Container container = frame.getContentPane();
-//
-//        FloorController controller = new FloorController();
-//
-//        container.add(controller.getView());
-//
-//        frame.pack();
-//        frame.setVisible(true);
+        JFrame frame = new JFrame();
 
-        Simulator simulator = new Simulator();
-        simulator.run();
+        Container container = frame.getContentPane();
+
+        FloorController menbersFloor = new FloorController(0);
+        FloorController noneController = new FloorController(1);
+        FloorController registeredFloor = new FloorController(2);
+
+        container.add(menbersFloor.getView());
+        container.add(noneController.getView());
+
+
+        frame.pack();
+        frame.setVisible(true);
+
+//        Simulator simulator = new Simulator();2
+//        simulator.run();
 
 
     }
