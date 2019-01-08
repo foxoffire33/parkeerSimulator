@@ -1,4 +1,4 @@
-package nl.hanze;
+package nl.hanze.enums;
 
 public enum FloorEnum {
      FLOOR_TYPE_NONE(1),
