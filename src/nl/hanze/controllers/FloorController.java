@@ -2,7 +2,7 @@ package nl.hanze.controllers;
 
 import nl.hanze.Car;
 import nl.hanze.Location;
-import nl.hanze.enums.FloorEnum;
+import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
 import nl.hanze.views.sumulator.floor.FloorViewIndex;
 
@@ -15,15 +15,19 @@ public class FloorController {
     private ArrayList<FloorModel> models = new ArrayList<>();
     private FloorViewIndex view;
 
-    public void addModel(FloorEnum type,int id) {
-        this.models.add(new FloorModel(type,id));
+    public void addModel(FloorType type) {
+        this.models.add(new FloorModel(type));
+    }
+
+    public void addModel(FloorType type, int rows) {
+        this.models.add(new FloorModel(type, rows));
     }
 
     public void tick() {
         for (FloorModel model : this.models) {
             for (int row = 0; row < model.getNumberOfRows(); row++) {
                 for (int place = 0; place < model.getNumberOfPlaces(); place++) {
-                    Location location = new Location(model.getId(), row, place);
+                    Location location = new Location(model.getType().getValue(), row, place);
                     Car car = model.getCarAt(location);
                     if (car != null) {
                         car.tick();
@@ -33,11 +37,11 @@ public class FloorController {
         }
     }
 
-    public FloorViewIndex getView(int modelID, Color color) {
+    public FloorViewIndex getView(FloorType floorType, Color color) {
 
 
         try {
-            FloorModel model = this.models.get(modelID);
+            FloorModel model = this.models.get(floorType.getValue());
 
             return new FloorViewIndex(model, color);
         } catch (ArrayIndexOutOfBoundsException ex) {

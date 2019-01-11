@@ -2,8 +2,9 @@ package nl.hanze;
 
 import nl.hanze.Windows.MainWindow;
 import nl.hanze.controllers.FloorController;
-import nl.hanze.enums.FloorEnum;
+import nl.hanze.enums.FloorType;
 
+import javax.swing.*;
 import java.awt.*;
 
 
@@ -15,19 +16,18 @@ public class Main {
         //Maak een controller
         FloorController floorController = new FloorController();
         //Maak models per floor aan en zet deze in de ArrayList in de controller
-        floorController.addModel(FloorEnum.FLOOR_TYPE_MENBER,0);
-        floorController.addModel(FloorEnum.FLOOR_TYPE_NONE,1);
-        floorController.addModel(FloorEnum.FLOOR_TYPE_NONE,2);
-        floorController.addModel(FloorEnum.FLOOR_TYPE_RESAVERED,3);
+        floorController.addModel(FloorType.FLOOR_TYPE_MENBER,6);
+        floorController.addModel(FloorType.FLOOR_TYPE_NONE,10);
 
-        mainWindow.add(floorController.getView(0, Color.blue));
-        mainWindow.add(floorController.getView(1, Color.green));
-        mainWindow.add(floorController.getView(2, Color.green));
-        mainWindow.add(floorController.getView(3, Color.yellow));
+        floorController.addModel(FloorType.FLOOR_TYPE_RESAVERED,6);
+
+        mainWindow.add(floorController.getView(FloorType.FLOOR_TYPE_MENBER, Color.blue));
+        mainWindow.add(floorController.getView(FloorType.FLOOR_TYPE_NONE, Color.green));
+        mainWindow.add(floorController.getView(FloorType.FLOOR_TYPE_RESAVERED, Color.yellow));
 
         //views toevoegen aan MainWindow
 
-        GridLayout experimentLayout = new GridLayout(1, 4);
+        GridLayout experimentLayout = new GridLayout(0, 3);
         mainWindow.setLayout(experimentLayout);
 
 

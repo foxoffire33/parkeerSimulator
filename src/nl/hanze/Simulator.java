@@ -1,6 +1,7 @@
 package nl.hanze;
 
 import nl.hanze.Windows.MainWindow;
+import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
 import nl.hanze.controllers.*;
 
@@ -9,13 +10,15 @@ import java.util.Random;
 
 public class Simulator {
 
-    private static final String AD_HOC = "1";
-    private static final String PASS = "2";
+    private static final int AD_HOC = 0;
+    private static final int PASS = 1;
+    private static final int RESERVERED = 2;
 
 
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
+    private CarQueue entranceReserveredQueue;
     private CarQueue exitCarQueue;
     private FloorController floorController;
 
@@ -36,9 +39,10 @@ public class Simulator {
 
     private MainWindow mainWindow;
 
-    public Simulator(FloorController floorController,MainWindow mainWindow) {
+    public Simulator(FloorController floorController, MainWindow mainWindow) {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
+        entranceReserveredQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         this.floorController = floorController;
@@ -85,6 +89,7 @@ public class Simulator {
         carsArriving();
         carsEntering(entrancePassQueue);
         carsEntering(entranceCarQueue);
+        carsEntering(entranceReserveredQueue);
     }
 
     private void handleExit() {
@@ -100,9 +105,13 @@ public class Simulator {
 
     private void carsArriving() {
         int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
-        addArrivingCars(numberOfCars, AD_HOC);
+        addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_MENBER);
+
         numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);
+        addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_NONE);
+
+        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_RESAVERED);
     }
 
     private void carsEntering(CarQueue queue) {
@@ -116,9 +125,11 @@ public class Simulator {
 
             FloorModel model;
             if (car instanceof AdHocCar) {
-                model = floorController.getModel(0);
+                model = floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue());
+            } else if (car instanceof ParkingPassCar) {
+                model = floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue());
             } else {
-                model = floorController.getModel(1);
+                model = floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue());
             }
 
             Location freeLocation = model.getFirstFreeLocation();
@@ -175,17 +186,22 @@ public class Simulator {
         return (int) Math.round(numberOfCarsPerHour / 60);
     }
 
-    private void addArrivingCars(int numberOfCars, String type) {
+    private void addArrivingCars(int numberOfCars, FloorType type) {
         // Add the cars to the back of the queue.
         switch (type) {
-            case AD_HOC:
+            case FLOOR_TYPE_MENBER:
                 for (int i = 0; i < numberOfCars; i++) {
                     entranceCarQueue.addCar(new AdHocCar());
                 }
                 break;
-            case PASS:
+            case FLOOR_TYPE_NONE:
                 for (int i = 0; i < numberOfCars; i++) {
                     entrancePassQueue.addCar(new ParkingPassCar());
+                }
+                break;
+            case FLOOR_TYPE_RESAVERED:
+                for (int i = 0; i < numberOfCars; i++) {
+                    entranceReserveredQueue.addCar(new ParkingReserveredCar());
                 }
                 break;
         }

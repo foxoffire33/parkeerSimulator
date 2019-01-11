@@ -2,36 +2,35 @@ package nl.hanze.models;
 
 import nl.hanze.Car;
 import nl.hanze.Location;
-import nl.hanze.enums.FloorEnum;
+import nl.hanze.enums.FloorType;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class FloorModel {
 
-    private FloorEnum type;
-    private int id;
+    private FloorType type;
     private int numberOfRows = 4;
     private int numberOfPlaces = 30;
     private int numberOfOpenSpots = (this.numberOfRows * this.numberOfPlaces);
-    private Car[][] cars = new Car[this.numberOfRows][this.numberOfPlaces];
+    private Car[][] cars;
     ;
 
     public static int NUMBER_OF_MODELS = -1;
 
-    public FloorModel(FloorEnum type, int id) {
+    public FloorModel(FloorType type) {
         this.type = type;
-
-        FloorModel.NUMBER_OF_MODELS += 1;
-        this.id = id;
+        this.initCarsArray(this.numberOfRows,this.numberOfPlaces);
     }
 
-    public int getId() {
-        return id;
+    public FloorModel(FloorType type, int rows) {
+        this.type = type;
+        this.numberOfRows = rows;
+        this.initCarsArray(this.numberOfRows,this.numberOfPlaces);
     }
 
-    public void setId(int id) {
-        this.id = id;
+    private void initCarsArray(int rows, int places) {
+        this.cars = new Car[rows][places];
     }
 
     public int getNumberOfRows() {
@@ -52,6 +51,10 @@ public class FloorModel {
 
     public int getNumberOfOpenSpots() {
         return this.numberOfOpenSpots;
+    }
+
+    public FloorType getType() {
+        return this.type;
     }
 
 
@@ -105,7 +108,7 @@ public class FloorModel {
     public Location getFirstFreeLocation() {
         for (int row = 0; row < this.getNumberOfRows(); row++) {
             for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-                Location location = new Location(this.getId(), row, place);
+                Location location = new Location(this.type.getValue(), row, place);
                 if (this.getCarAt(location) == null) {
                     return location;
                 }
@@ -118,7 +121,7 @@ public class FloorModel {
     public Car getFirstLeavingCar() {
         for (int row = 0; row < this.getNumberOfRows(); row++) {
             for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-                Location location = new Location(this.getId(), row, place);
+                Location location = new Location(this.type.getValue(), row, place);
                 Car car = getCarAt(location);
                 if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
                     return car;
