@@ -28,7 +28,7 @@ public class FloorViewIndex extends JPanel {
             for (int place = 0; place < model.getNumberOfPlaces(); place++) {
                 Car car = this.model.getCarAt(new Location(0,row,place));
 
-                Color color = car == null ? Color.black : car.getColor();
+                Color color = car == null ? Color.black : this.g2Color;
                 g2.setColor(color);
 
                 g2.fillRect(

@@ -36,12 +36,13 @@ public class Simulator {
 
     private MainWindow mainWindow;
 
-    public Simulator(FloorController floorController) {
+    public Simulator(FloorController floorController,MainWindow mainWindow) {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         this.floorController = floorController;
+        this.mainWindow = mainWindow;
     }
 
     public void run() {
@@ -94,6 +95,7 @@ public class Simulator {
 
     private void updateViews() {
         this.floorController.tick();
+        this.mainWindow.repaint();
     }
 
     private void carsArriving() {
@@ -116,7 +118,7 @@ public class Simulator {
             if (car instanceof AdHocCar) {
                 model = floorController.getModel(0);
             } else {
-                model = floorController.getModel(0);
+                model = floorController.getModel(1);
             }
 
             Location freeLocation = model.getFirstFreeLocation();
