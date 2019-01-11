@@ -10,24 +10,20 @@ import java.awt.*;
 public class FloorViewIndex extends JPanel {
 
     private FloorModel model;
+    private Color g2Color = Color.black;
 
-    public FloorViewIndex() {
-        this.setBackground(Color.BLUE);
-    }
-
-    public FloorViewIndex(FloorModel model) {
+    public FloorViewIndex(FloorModel model,Color color) {
         this.model = model;
-        this.setSize(new Dimension(300,600));
+        this.g2Color = color;
     }
 
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         for (int row = 0; row < model.getNumberOfRows(); row++) {
             for (int place = 0; place < model.getNumberOfPlaces(); place++) {
-                g2.setColor(Color.gray);
-                System.out.println("Model id is: " + model.getId());
+                g2.setColor(this.g2Color);
                 g2.fillRect(
-                        model.getId() * 260 + (1 + (int) Math.floor(row * 0.5)) * 75 + (row % 2) * 20,
+                        0 * 260 + (1 + (int) Math.floor(row * 0.5)) * 75 + (row % 2) * 20,
                         60 + place * 10,
                         20 - 1,
                         10 - 1);

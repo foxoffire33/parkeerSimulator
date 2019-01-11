@@ -1,5 +1,6 @@
 package nl.hanze.models;
 
+import nl.hanze.Car;
 import nl.hanze.enums.FloorEnum;
 
 public class FloorModel {
@@ -8,6 +9,7 @@ public class FloorModel {
     private int id;
     private int numberOfRows = 3;
     private int numberOfPlaces = 30;
+    private Car[][] cars;
 
     public FloorModel(FloorEnum type, int id) {
         this.type = type;
