@@ -9,6 +9,7 @@ public class MainWindow extends JFrame {
 
      public MainWindow(){
          JFrame frame = new JFrame();
+         frame.setJMenuBar(new MyMenuBar());
 
          Container container = frame.getContentPane();
 
