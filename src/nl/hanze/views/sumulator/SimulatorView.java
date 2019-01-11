@@ -37,7 +37,7 @@ public class SimulatorView extends JFrame {
     public void updateView() {
         carParkView.updateView();
     }
-    
+
 	public int getNumberOfFloors() {
         return numberOfFloors;
     }
@@ -53,7 +53,7 @@ public class SimulatorView extends JFrame {
     public int getNumberOfOpenSpots(){
     	return numberOfOpenSpots;
     }
-    
+
     public Car getCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
