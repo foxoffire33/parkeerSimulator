@@ -12,9 +12,7 @@ public abstract class Car {
     /**
      * Constructor for objects of class Car
      */
-    public Car() {
-
-    }
+    public Car() { }
 
     public Location getLocation() {
         return location;

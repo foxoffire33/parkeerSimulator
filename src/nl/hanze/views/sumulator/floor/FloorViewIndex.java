@@ -26,9 +26,11 @@ public class FloorViewIndex extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         for (int row = 0; row < model.getNumberOfRows(); row++) {
             for (int place = 0; place < model.getNumberOfPlaces(); place++) {
-                this.model.addLocation(new Location(this.model.getId(), row, place));
+                Car car = this.model.getCarAt(new Location(0,row,place));
 
-                g2.setColor(this.g2Color);
+                Color color = car == null ? Color.black : car.getColor();
+                g2.setColor(color);
+
                 g2.fillRect(
                         0 * 260 + (1 + (int) Math.floor(row * 0.5)) * 75 + (row % 2) * 20,
                         60 + place * 10,

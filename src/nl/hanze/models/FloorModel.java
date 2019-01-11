@@ -14,18 +14,16 @@ public class FloorModel {
     private int numberOfRows = 4;
     private int numberOfPlaces = 30;
     private int numberOfOpenSpots = (this.numberOfRows * this.numberOfPlaces);
-    private ArrayList<Location> locations;
-    private Car[][] cars;
+    private Car[][] cars = new Car[this.numberOfRows][this.numberOfPlaces];
+    ;
 
-    public static int NUMBER_OF_MODELS = 0;
+    public static int NUMBER_OF_MODELS = -1;
 
-    public FloorModel(FloorEnum type) {
+    public FloorModel(FloorEnum type, int id) {
         this.type = type;
+
+        FloorModel.NUMBER_OF_MODELS += 1;
         this.id = id;
-
-        this.locations = new ArrayList<>();
-
-        NUMBER_OF_MODELS++;
     }
 
     public int getId() {
@@ -52,23 +50,10 @@ public class FloorModel {
         this.numberOfPlaces = numberOfPlaces;
     }
 
-    public void addLocation(Location location) {
-        this.locations.add(location);
+    public int getNumberOfOpenSpots() {
+        return this.numberOfOpenSpots;
     }
 
-    public Car getCarAt(Location location) {
-        //location valied checken
-        if (!locationIsValid(location)) {
-            return null;
-        }
-//        return this.cars[location.getRow()][location.getPlace()];
-        return new Car() {
-            @Override
-            public Color getColor() {
-                return Color.green;
-            }
-        };
-    }
 
     private boolean locationIsValid(Location location) {
         int row = location.getRow();
@@ -79,6 +64,13 @@ public class FloorModel {
         return true;
     }
 
+    public Car getCarAt(Location location) {
+        if (!locationIsValid(location)) {
+            return null;
+        }
+        return cars[location.getRow()][location.getPlace()];
+    }
+
     public boolean setCarAt(Location location, Car car) {
         if (!locationIsValid(location)) {
             return false;
@@ -87,11 +79,12 @@ public class FloorModel {
         if (oldCar == null) {
             cars[location.getRow()][location.getPlace()] = car;
             car.setLocation(location);
-            this.numberOfOpenSpots--;
+            numberOfOpenSpots--;
             return true;
         }
         return false;
     }
+
 
     public Car removeCarAt(Location location) {
         if (!locationIsValid(location)) {
@@ -101,28 +94,30 @@ public class FloorModel {
         if (car == null) {
             return null;
         }
-        cars[location.getRow()][location.getPlace()] = null;
+        ;
+
+        this.cars[location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
         this.numberOfOpenSpots++;
         return car;
     }
 
     public Location getFirstFreeLocation() {
-        for (int row = 0; row < getNumberOfRows(); row++) {
-            for (int place = 0; place < getNumberOfPlaces(); place++) {
+        for (int row = 0; row < this.getNumberOfRows(); row++) {
+            for (int place = 0; place < this.getNumberOfPlaces(); place++) {
                 Location location = new Location(this.getId(), row, place);
-                if (getCarAt(location) == null) {
+                if (this.getCarAt(location) == null) {
                     return location;
                 }
             }
         }
-        return null;
+        return new Location(0, 0, 0);
     }
 
 
     public Car getFirstLeavingCar() {
-        for (int row = 0; row < getNumberOfRows(); row++) {
-            for (int place = 0; place < getNumberOfPlaces(); place++) {
+        for (int row = 0; row < this.getNumberOfRows(); row++) {
+            for (int place = 0; place < this.getNumberOfPlaces(); place++) {
                 Location location = new Location(this.getId(), row, place);
                 Car car = getCarAt(location);
                 if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {

@@ -1,8 +1,10 @@
 package nl.hanze;
 
-import nl.hanze.views.sumulator.SimulatorView;
+import nl.hanze.Windows.MainWindow;
+import nl.hanze.models.FloorModel;
 import nl.hanze.controllers.*;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class Simulator {
@@ -32,6 +34,8 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    private MainWindow mainWindow;
+
     public Simulator(FloorController floorController) {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
@@ -47,8 +51,8 @@ public class Simulator {
     }
 
     private void tick() {
-       // advanceTime();
-     //   handleExit();
+        advanceTime();
+        handleExit();
         updateViews();
         // Pause.
         try {
@@ -78,20 +82,18 @@ public class Simulator {
 
     private void handleEntrance() {
         carsArriving();
-        //carsEntering(entrancePassQueue);
-        //carsEntering(entranceCarQueue);
+        carsEntering(entrancePassQueue);
+        carsEntering(entranceCarQueue);
     }
 
     private void handleExit() {
-      //  carsReadyToLeave();
-       // carsPaying();
+        carsReadyToLeave();
+        carsPaying();
         carsLeaving();
     }
 
     private void updateViews() {
-//        floorController.tick();
-        // Update the car park view.
-    //    floorController.updateView();
+        this.floorController.tick();
     }
 
     private void carsArriving() {
@@ -101,43 +103,52 @@ public class Simulator {
         addArrivingCars(numberOfCars, PASS);
     }
 
-//    private void carsEntering(CarQueue queue) {
-//        int i = 0;
-//        // Remove car from the front of the queue and assign to a parking space.
-//        while (queue.carsInQueue() > 0 &&
-//                simulatorView.getNumberOfOpenSpots() > 0 &&
-//                i < enterSpeed) {
-//            Car car = queue.removeCar();
-//            Location freeLocation = simulatorView.getFirstFreeLocation();
-//            simulatorView.setCarAt(freeLocation, car);
-//            i++;
-//        }
-//    }
+    private void carsEntering(CarQueue queue) {
+        int i = 0;
+        // Remove car from the front of the queue and assign to a parking space.
+        while (queue.carsInQueue() > 0 &&
+                floorController.getNumberOfOpenSpots() > 0 &&
+                i < enterSpeed) {
 
-//    private void carsReadyToLeave() {
+            Car car = queue.removeCar();
+
+            FloorModel model;
+            if (car instanceof AdHocCar) {
+                model = floorController.getModel(0);
+            } else {
+                model = floorController.getModel(0);
+            }
+
+            Location freeLocation = model.getFirstFreeLocation();
+            model.setCarAt(freeLocation, car);
+            i++;
+        }
+    }
+
+    private void carsReadyToLeave() {
 //        // Add leaving cars to the payment queue.
-//        Car car = simulatorView.getFirstLeavingCar();
-//        while (car != null) {
-//            if (car.getHasToPay()) {
-//                car.setIsPaying(true);
-//                paymentCarQueue.addCar(car);
-//            } else {
-//                carLeavesSpot(car);
-//            }
-//            car = simulatorView.getFirstLeavingCar();
-//        }
-//    }
+        Car car = floorController.getFirstLeavingCar();
+        while (car != null) {
+            if (car.getHasToPay()) {
+                car.setIsPaying(true);
+                paymentCarQueue.addCar(car);
+            } else {
+                carLeavesSpot(car);
+            }
+            car = floorController.getFirstLeavingCar();
+        }
+    }
 
-//    private void carsPaying() {
-//        // Let cars pay.
-//        int i = 0;
-//        while (paymentCarQueue.carsInQueue() > 0 && i < paymentSpeed) {
-//            Car car = paymentCarQueue.removeCar();
-//            // TODO Handle payment.
-//            carLeavesSpot(car);
-//            i++;
-//        }
-//    }
+    private void carsPaying() {
+        // Let cars pay.
+        int i = 0;
+        while (paymentCarQueue.carsInQueue() > 0 && i < paymentSpeed) {
+            Car car = paymentCarQueue.removeCar();
+            // TODO Handle payment.
+            carLeavesSpot(car);
+            i++;
+        }
+    }
 
     private void carsLeaving() {
         // Let cars leave.
@@ -178,9 +189,12 @@ public class Simulator {
         }
     }
 
-//    private void carLeavesSpot(Car car) {
-//        simulatorView.removeCarAt(car.getLocation());
-//        exitCarQueue.addCar(car);
-//    }
+    private void carLeavesSpot(Car car) {
+        Location carLOcation = car.getLocation();
+        FloorModel model = this.floorController.getModel(carLOcation.getFloor());
+        model.removeCarAt(carLOcation);
+
+        exitCarQueue.addCar(car);
+    }
 
 }

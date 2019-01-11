@@ -10,32 +10,36 @@ import java.awt.*;
 public class MainWindow extends JFrame {
 
     public MainWindow() {
-        JFrame frame = new JFrame();
-        frame.setJMenuBar(new MyMenuBar());
+        this.setJMenuBar(new MyMenuBar());
 
-        Container container = frame.getContentPane();
+        Container container = this.getContentPane();
 
         //Maak een controller
-        FloorController florrController = new FloorController();
+        FloorController floorController = new FloorController();
         //Maak models per floor aan en zet deze in de ArrayList in de controller
-        florrController.addModel(FloorEnum.FLOOR_TYPE_MENBER);
-        florrController.addModel(FloorEnum.FLOOR_TYPE_NONE);
-        florrController.addModel(FloorEnum.FLOOR_TYPE_NONE);
-        florrController.addModel(FloorEnum.FLOOR_TYPE_RESAVERED);
+        floorController.addModel(FloorEnum.FLOOR_TYPE_MENBER,0);
+        floorController.addModel(FloorEnum.FLOOR_TYPE_NONE,1);
+        floorController.addModel(FloorEnum.FLOOR_TYPE_NONE,2);
+        floorController.addModel(FloorEnum.FLOOR_TYPE_RESAVERED,3);
+
+        this.add(floorController.getView(0, Color.blue));
+        this.add(floorController.getView(1, Color.green));
+        this.add(floorController.getView(2, Color.green));
+        this.add(floorController.getView(3, Color.yellow));
 
         //views toevoegen aan MainWindow
-        frame.add(florrController.getView(0, Color.blue));
-        frame.add(florrController.getView(1, Color.green));
-        frame.add(florrController.getView(2, Color.green));
-        frame.add(florrController.getView(3, Color.yellow));
 
         GridLayout experimentLayout = new GridLayout(1, 4);
-        frame.setLayout(experimentLayout);
+        this.setLayout(experimentLayout);
 
-        frame.setMinimumSize(new Dimension(1200, 500));
+        this.setMinimumSize(new Dimension(1200, 500));
 
-        frame.pack();
-        frame.setVisible(true);
+        this.pack();
+        this.setVisible(true);
+
+        Simulator simulator = new Simulator(floorController);
+        simulator.run();
+
     }
 
 }
