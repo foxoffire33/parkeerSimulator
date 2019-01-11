@@ -7,33 +7,46 @@ import nl.hanze.models.FloorModel;
 import nl.hanze.views.sumulator.floor.FloorViewIndex;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class FloorController {
 
-    private FloorModel model;
+    private ArrayList<FloorModel> models = new ArrayList<>();
     private FloorViewIndex view;
 
-    public FloorController(int id, Color color) {
-        this.model = new FloorModel(FloorEnum.FLOOR_TYPE_NONE, id);
-        this.model.setId(id);
-        this.view = new FloorViewIndex(this.model, color);
-        this.model.setNumberOfRows(6);
+    public void addModel(FloorEnum type) {
+        this.models.add(new FloorModel(type));
     }
 
     public void tick() {
-        for (int row = 0; row < this.model.getNumberOfRows(); row++) {
-            for (int place = 0; place < this.model.getNumberOfPlaces(); place++) {
-                Location location = new Location(this.model.getId(), row, place);
-                Car car = this.model.getCarAt(location);
-                if (car != null) {
-                    car.tick();
+
+
+        for (int floor = 0; floor < this.models.size(); floor++) {
+            FloorModel model = this.models.get(floor);
+            for (int row = 0; row < model.getNumberOfRows(); row++) {
+                for (int place = 0; place < model.getNumberOfPlaces(); place++) {
+                    Location location = new Location(model.getId(), row, place);
+                    Car car = model.getCarAt(location);
+                    if (car != null) {
+                        car.tick();
+                        System.out.println("Ticks");
+                    }
                 }
             }
         }
     }
 
-    public FloorViewIndex getView() {
-        return this.view;
+    public FloorViewIndex getView(int modelID, Color color) {
+
+
+        try {
+            FloorModel model = this.models.get(modelID);
+
+            return new FloorViewIndex(model, color);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.out.println("Floor not found");
+        }
+        return null;
     }
 
 }

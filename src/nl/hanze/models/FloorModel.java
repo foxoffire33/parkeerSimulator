@@ -4,23 +4,28 @@ import nl.hanze.Car;
 import nl.hanze.Location;
 import nl.hanze.enums.FloorEnum;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class FloorModel {
 
     private FloorEnum type;
     private int id;
-    private int numberOfRows = 3;
+    private int numberOfRows = 4;
     private int numberOfPlaces = 30;
     private int numberOfOpenSpots = (this.numberOfRows * this.numberOfPlaces);
     private ArrayList<Location> locations;
     private Car[][] cars;
 
-    public FloorModel(FloorEnum type, int id) {
+    public static int NUMBER_OF_MODELS = 0;
+
+    public FloorModel(FloorEnum type) {
         this.type = type;
         this.id = id;
 
         this.locations = new ArrayList<>();
+
+        NUMBER_OF_MODELS++;
     }
 
     public int getId() {
@@ -52,10 +57,17 @@ public class FloorModel {
     }
 
     public Car getCarAt(Location location) {
+        //location valied checken
         if (!locationIsValid(location)) {
             return null;
         }
-        return this.cars[location.getRow()][location.getPlace()];
+//        return this.cars[location.getRow()][location.getPlace()];
+        return new Car() {
+            @Override
+            public Color getColor() {
+                return Color.green;
+            }
+        };
     }
 
     private boolean locationIsValid(Location location) {
