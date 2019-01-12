@@ -1,6 +1,6 @@
 package nl.hanze.controllers;
 
-import nl.hanze.Car;
+import nl.hanze.cars.Car;
 import nl.hanze.Location;
 import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
@@ -8,7 +8,6 @@ import nl.hanze.views.sumulator.floor.FloorViewIndex;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class FloorController {
 

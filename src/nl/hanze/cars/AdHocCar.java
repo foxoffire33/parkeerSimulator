@@ -1,4 +1,4 @@
-package nl.hanze;
+package nl.hanze.cars;
 
 import java.util.Random;
 import java.awt.*;

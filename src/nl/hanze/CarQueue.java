@@ -1,4 +1,6 @@
 package nl.hanze;
+import nl.hanze.cars.Car;
+
 import java.util.LinkedList;
 import java.util.Queue;
 

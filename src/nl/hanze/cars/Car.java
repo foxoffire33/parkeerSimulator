@@ -1,4 +1,6 @@
-package nl.hanze;
+package nl.hanze.cars;
+
+import nl.hanze.Location;
 
 import java.awt.*;
 

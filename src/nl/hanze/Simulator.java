@@ -1,11 +1,14 @@
 package nl.hanze;
 
 import nl.hanze.Windows.MainWindow;
+import nl.hanze.cars.AdHocCar;
+import nl.hanze.cars.Car;
+import nl.hanze.cars.ParkingPassCar;
+import nl.hanze.cars.ParkingReserveredCar;
 import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
 import nl.hanze.controllers.*;
 
-import javax.swing.*;
 import java.util.Random;
 
 public class Simulator {

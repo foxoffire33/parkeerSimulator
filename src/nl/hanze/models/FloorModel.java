@@ -1,11 +1,8 @@
 package nl.hanze.models;
 
-import nl.hanze.Car;
+import nl.hanze.cars.Car;
 import nl.hanze.Location;
 import nl.hanze.enums.FloorType;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class FloorModel {
 

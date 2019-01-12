@@ -1,6 +1,6 @@
 package nl.hanze.views.sumulator;
 
-import nl.hanze.Car;
+import nl.hanze.cars.Car;
 import nl.hanze.Location;
 
 import javax.swing.*;
