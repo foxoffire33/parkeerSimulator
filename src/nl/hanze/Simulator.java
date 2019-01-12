@@ -101,6 +101,14 @@ public class Simulator {
     private void updateViews() {
         this.floorController.tick();
         this.mainWindow.repaint();
+        this.mainWindow.revalidate();
+
+
+        Main.lebel1.setText("Number of openspots: " + floorController.getNumberOfOpenSpots());
+        Main.label2.setText("Member spots: " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getNumberOfOpenSpots());
+        Main.label3.setText("Totaal spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getNumberOfOpenSpots());
+        Main.label4.setText("Totaal spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getNumberOfOpenSpots());
+
     }
 
     private void carsArriving() {
@@ -117,23 +125,29 @@ public class Simulator {
     private void carsEntering(CarQueue queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue() > 0 &&
-                floorController.getNumberOfOpenSpots() > 0 &&
-                i < enterSpeed) {
+        while (queue.carsInQueue() > 0 && i < enterSpeed) {
 
             Car car = queue.removeCar();
+
+            int openSpots = 0;
 
             FloorModel model;
             if (car instanceof AdHocCar) {
                 model = floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue());
+                openSpots = floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getNumberOfOpenSpots();
             } else if (car instanceof ParkingPassCar) {
                 model = floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue());
+                openSpots = floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getNumberOfOpenSpots();
             } else {
                 model = floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue());
+                openSpots = floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getNumberOfOpenSpots();
             }
 
-            Location freeLocation = model.getFirstFreeLocation();
-            model.setCarAt(freeLocation, car);
+
+            if (openSpots > 0) {
+                Location freeLocation = model.getFirstFreeLocation();
+                model.setCarAt(freeLocation, car);
+            }
             i++;
         }
     }

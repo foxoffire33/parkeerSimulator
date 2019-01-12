@@ -12,7 +12,7 @@ public class FloorModel {
     private FloorType type;
     private int numberOfRows = 4;
     private int numberOfPlaces = 30;
-    private int numberOfOpenSpots = (this.numberOfRows * this.numberOfPlaces);
+    private int numberOfOpenSpots;
     private Car[][] cars;
     ;
 
@@ -20,17 +20,19 @@ public class FloorModel {
 
     public FloorModel(FloorType type) {
         this.type = type;
-        this.initCarsArray(this.numberOfRows,this.numberOfPlaces);
+        this.initCarsArray(this.numberOfRows, this.numberOfPlaces);
     }
 
     public FloorModel(FloorType type, int rows) {
         this.type = type;
         this.numberOfRows = rows;
-        this.initCarsArray(this.numberOfRows,this.numberOfPlaces);
+        this.initCarsArray(this.numberOfRows, this.numberOfPlaces);
     }
 
     private void initCarsArray(int rows, int places) {
+
         this.cars = new Car[rows][places];
+        this.numberOfOpenSpots = (rows * places);
     }
 
     public int getNumberOfRows() {
@@ -59,12 +61,15 @@ public class FloorModel {
 
 
     private boolean locationIsValid(Location location) {
-        int row = location.getRow();
-        int place = location.getPlace();
-        if (row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
-            return false;
+        if (location != null) {
+            int row = location.getRow();
+            int place = location.getPlace();
+            if (row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
+                return false;
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     public Car getCarAt(Location location) {
@@ -114,7 +119,7 @@ public class FloorModel {
                 }
             }
         }
-        return new Location(0, 0, 0);
+        return null;
     }
 
 

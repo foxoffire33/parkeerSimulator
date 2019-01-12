@@ -10,6 +10,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         this.setJMenuBar(new MyMenuBar());
+
     }
 
 }
