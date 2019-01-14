@@ -10,6 +10,8 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
 
+    public static StatusBar statusBar;
+
     public MainWindow() {
         this.setJMenuBar(new MyMenuBar());
 
@@ -57,7 +59,8 @@ public class MainWindow extends JFrame {
 
         this.add(panel, BorderLayout.CENTER);
 
-        this.getContentPane().add(new StatusBar(), java.awt.BorderLayout.SOUTH);
+        this.statusBar = new StatusBar();
+        this.getContentPane().add(this.statusBar, java.awt.BorderLayout.SOUTH);
 
         this.pack();
         this.setVisible(true);

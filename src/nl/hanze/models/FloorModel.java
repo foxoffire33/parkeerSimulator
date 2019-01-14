@@ -52,6 +52,10 @@ public class FloorModel {
         return this.numberOfOpenSpots;
     }
 
+    public String getCurrentOpenSpots() {
+        return "Open spots: " + this.getNumberOfOpenSpots() + "/" + (this.getNumberOfRows() * this.getNumberOfPlaces());
+    }
+
     public FloorType getType() {
         return this.type;
     }

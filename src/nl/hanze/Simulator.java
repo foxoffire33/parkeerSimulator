@@ -9,6 +9,9 @@ import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
 import nl.hanze.controllers.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 public class Simulator {
@@ -108,9 +111,16 @@ public class Simulator {
 
 
         Main.lebel1.setText("Number of openspots: " + floorController.getNumberOfOpenSpots());
-        Main.label2.setText("Member spots: " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getNumberOfOpenSpots());
-        Main.label3.setText("Totaal spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getNumberOfOpenSpots());
-        Main.label4.setText("Totaal spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getNumberOfOpenSpots());
+        Main.label2.setText("Member spots: " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
+        Main.label3.setText("Totaal spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
+        Main.label4.setText("Totaal spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+
+
+        Date date = new Date();
+        String strDateFormat = "hh:mm:ss a";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        String formattedDate= dateFormat.format(date);
+        MainWindow.statusBar.setMessage("Running... " + formattedDate);
 
     }
 
