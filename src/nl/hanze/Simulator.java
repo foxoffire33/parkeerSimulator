@@ -5,12 +5,14 @@ import nl.hanze.cars.AdHocCar;
 import nl.hanze.cars.Car;
 import nl.hanze.cars.ParkingPassCar;
 import nl.hanze.cars.ParkingReserveredCar;
+import nl.hanze.database.MysqlConnection;
 import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
 import nl.hanze.controllers.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -53,6 +55,17 @@ public class Simulator {
         exitCarQueue = new CarQueue();
         this.floorController = floorController;
         this.mainWindow = mainWindow;
+
+        MysqlConnection mysql = new MysqlConnection();
+        ArrayList<ParkingReserveredCar> ir = mysql.reservations();
+        if (!ir.isEmpty()) {
+            for (ParkingReserveredCar model : ir) {
+                this.entranceReserveredQueue.addCar(model);
+                System.out.println(model.getColor());
+            }
+        }
+
+
     }
 
     public void run() {
@@ -119,7 +132,7 @@ public class Simulator {
         Date date = new Date();
         String strDateFormat = "hh:mm:ss a";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-        String formattedDate= dateFormat.format(date);
+        String formattedDate = dateFormat.format(date);
         MainWindow.statusBar.setMessage("Running... " + formattedDate);
 
     }
@@ -131,8 +144,8 @@ public class Simulator {
         numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_NONE);
 
-        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_RESAVERED);
+        //  numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        //addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_RESAVERED);
     }
 
     private void carsEntering(CarQueue queue) {
