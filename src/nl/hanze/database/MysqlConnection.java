@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class MysqlConnection {
 
     private Connection con;
+    private ArrayList<Integer> ids = new ArrayList<>();
 
     public MysqlConnection() {
         try {
@@ -24,17 +25,19 @@ public class MysqlConnection {
         }
     }
 
-    public ArrayList<ParkingReserveredCar> reservations() {
+    public ArrayList<ParkingReserveredCar> reservations(int hours) {
         ArrayList<ParkingReserveredCar> reservation = new ArrayList<>();
 
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT *,round(TIME_TO_SEC(TIMEDIFF(to_time,from_time)) / 60) as 'minutesStay' FROM `reservations`");
+            ResultSet rs = stmt.executeQuery("SELECT *,round(TIME_TO_SEC(TIMEDIFF(to_time,from_time)) / 60) as 'minutesStay' FROM `reservations` where " + hours + " between hour(from_time) and hour(to_time)");
+            this.ids.add(rs.getInt("id"));
             while (rs.next()) {
                 ParkingReserveredCar parkingReserveredCar = new ParkingReserveredCar();
                 parkingReserveredCar.setMinutesLeft(rs.getInt("minutesStay"));
-               reservation.add(parkingReserveredCar);
+                reservation.add(parkingReserveredCar);
             }
+            this.con.close();
         } catch (
                 Exception e) {
             System.out.println(e);

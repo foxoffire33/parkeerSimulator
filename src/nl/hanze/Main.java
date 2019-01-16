@@ -18,14 +18,6 @@ public class Main {
     public static MainWindow mainWindow;
 
     public static void main(String[] args) {
-
-//        MysqlConnection mysql = new MysqlConnection();
-//        ArrayList<ParkingReserveredCar> ir = mysql.reservations();
-//        if(!ir.isEmpty()){
-//            for (ParkingReserveredCar model : ir) {
-//                System.out.println(model.getColor());
-//            }
-//        }
         MainWindow mainWindow = new MainWindow();
     }
 

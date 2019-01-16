@@ -55,17 +55,16 @@ public class Simulator {
         exitCarQueue = new CarQueue();
         this.floorController = floorController;
         this.mainWindow = mainWindow;
+    }
 
+    public void getReswervered() {
         MysqlConnection mysql = new MysqlConnection();
-        ArrayList<ParkingReserveredCar> ir = mysql.reservations();
+        ArrayList<ParkingReserveredCar> ir = mysql.reservations(this.hour);
         if (!ir.isEmpty()) {
             for (ParkingReserveredCar model : ir) {
                 this.entranceReserveredQueue.addCar(model);
-                System.out.println(model.getColor());
             }
         }
-
-
     }
 
     public void run() {
@@ -77,6 +76,7 @@ public class Simulator {
     private void tick() {
         advanceTime();
         handleExit();
+        getReswervered();
         updateViews();
         // Pause.
         try {
@@ -133,7 +133,7 @@ public class Simulator {
         String strDateFormat = "hh:mm:ss a";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         String formattedDate = dateFormat.format(date);
-        MainWindow.statusBar.setMessage("Running... " + formattedDate);
+        MainWindow.statusBar.setMessage("Running... " + this.hour + ":" + this.minute);
 
     }
 

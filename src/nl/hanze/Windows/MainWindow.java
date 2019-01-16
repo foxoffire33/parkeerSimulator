@@ -22,7 +22,6 @@ public class MainWindow extends JFrame {
         //Maak models per floor aan en zet deze in de ArrayList in de controller
         floorController.addModel(FloorType.FLOOR_TYPE_MENBER, 4);
         floorController.addModel(FloorType.FLOOR_TYPE_NONE, 8);
-
         floorController.addModel(FloorType.FLOOR_TYPE_RESAVERED, 2);
 
         JPanel panel = new JPanel();

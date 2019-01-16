@@ -37,8 +37,6 @@ public class FloorController {
     }
 
     public FloorViewIndex getView(FloorType floorType, Color color) {
-
-
         try {
             FloorModel model = this.models.get(floorType.getValue());
 
@@ -59,6 +57,8 @@ public class FloorController {
     }
 
     public int getNumberOfOpenSpots() {
+
+
         int totaal = 0;
 
         for (FloorModel model : this.models) {
