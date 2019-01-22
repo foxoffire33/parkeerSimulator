@@ -36,14 +36,16 @@ public class Simulator {
 
     private int tickPause = 100;
 
-    int weekDayArrivals = 100; // average number of arriving cars per hour
-    int weekendArrivals = 200; // average number of arriving cars per hour
-    int weekDayPassArrivals = 50; // average number of arriving cars per hour
-    int weekendPassArrivals = 5; // average number of arriving cars per hour
+    int weekDayArrivals = 200; // average number of arriving cars per hour
+    int weekendArrivals = 400; // average number of arriving cars per hour
+    int weekDayPassArrivals = 80; // average number of arriving cars per hour
+    int weekendPassArrivals = 60; // average number of arriving cars per hour
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
+
+    int carsOutQenue = 0;
 
     private MainWindow mainWindow;
 
@@ -57,12 +59,65 @@ public class Simulator {
         this.mainWindow = mainWindow;
     }
 
+    private String getDayString() {
+        switch (this.day) {
+            case 0:
+                return "Monday";
+            case 1:
+                return "Tuesday";
+            case 2:
+                return "Wednesday";
+            case 3:
+                return "Thursday";
+            case 4:
+                return "Friday";
+            case 5:
+                return "Saturday";
+            case 6:
+                return "Saturday";
+        }
+        return "";
+    }
+
+    private void queueCheck(CarQueue queue) {
+        if (queue.carsInQueue() > 10) {
+            int rendomNumber = getRandomNumberInRange(3, 7);
+            for (int i = 0; i < rendomNumber; i++) {
+                queue.removeCar();
+                this.carsOutQenue++;
+            }
+        }
+    }
+
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+
+    private void extraGuests() {
+        if (this.day >= 4 && this.hour == 18) {
+            //cars toevoegen
+        }
+        if (this.day == 3 && this.hour == 18) {
+            //500 extra autos
+        }
+    }
+
     public void getReswervered() {
-        MysqlConnection mysql = new MysqlConnection();
-        ArrayList<ParkingReserveredCar> ir = mysql.reservations(this.hour);
-        if (!ir.isEmpty()) {
-            for (ParkingReserveredCar model : ir) {
-                this.entranceReserveredQueue.addCar(model);
+        if (this.minute == 1) {
+            MysqlConnection mysql = new MysqlConnection();
+            if (mysql.isDbConnected()) {
+                ArrayList<ParkingReserveredCar> ir = mysql.reservations(this.hour);
+                if (!ir.isEmpty()) {
+                    for (ParkingReserveredCar model : ir) {
+                        this.entranceReserveredQueue.addCar(model);
+                    }
+                }
             }
         }
     }
@@ -109,6 +164,9 @@ public class Simulator {
         carsEntering(entrancePassQueue);
         carsEntering(entranceCarQueue);
         carsEntering(entranceReserveredQueue);
+        queueCheck(entrancePassQueue);
+        queueCheck(entranceCarQueue);
+        queueCheck(entranceReserveredQueue);
     }
 
     private void handleExit() {
@@ -128,12 +186,16 @@ public class Simulator {
         Main.label3.setText("Totaal spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
         Main.label4.setText("Totaal spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
 
+        this.mainWindow.quene1.setText("Quene members:" + this.entrancePassQueue.carsInQueue());
+        this.mainWindow.quene2.setText("Quene reservered:" + this.entranceReserveredQueue.carsInQueue());
+        this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
+
 
         Date date = new Date();
         String strDateFormat = "hh:mm:ss a";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         String formattedDate = dateFormat.format(date);
-        MainWindow.statusBar.setMessage("Running... " + this.hour + ":" + this.minute);
+        this.mainWindow.statusBar.setMessage("Running... " + this.getDayString() + "  " + this.hour + ":" + this.minute);
 
     }
 
@@ -216,9 +278,7 @@ public class Simulator {
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5
-                ? weekDay
-                : weekend;
+        int averageNumberOfCarsPerHour = day < 5 ? weekDay : weekend;
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;

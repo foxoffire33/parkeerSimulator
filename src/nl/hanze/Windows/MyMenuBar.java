@@ -19,6 +19,7 @@ public class MyMenuBar extends JMenuBar {
         JMenuItem restartItem = new JMenuItem("Start Simulation");
         restartItem.addActionListener((e) -> {
            // Main.Simulatie();
+            new SimulatorStart();
         });
         fileMenu.add(restartItem);
 

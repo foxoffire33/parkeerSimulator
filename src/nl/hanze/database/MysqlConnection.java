@@ -25,13 +25,25 @@ public class MysqlConnection {
         }
     }
 
+    public boolean isDbConnected() {
+        try {
+
+            if (this.con != null && !this.con.isClosed()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            return false;
+        }
+        return false;
+    }
+
     public ArrayList<ParkingReserveredCar> reservations(int hours) {
         ArrayList<ParkingReserveredCar> reservation = new ArrayList<>();
 
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT *,round(TIME_TO_SEC(TIMEDIFF(to_time,from_time)) / 60) as 'minutesStay' FROM `reservations` where " + hours + " between hour(from_time) and hour(to_time)");
-            this.ids.add(rs.getInt("id"));
+            ResultSet rs = stmt.executeQuery("SELECT *,round(TIME_TO_SEC(TIMEDIFF(to_time,from_time)) / 60) as 'minutesStay' FROM `reservations` where " + hours + " = hour(from_time)");
+            // ResultSet rs = stmt.executeQuery("SELECT *,round(TIME_TO_SEC(TIMEDIFF(to_time,from_time)) / 60) as 'minutesStay' FROM `reservations`");
             while (rs.next()) {
                 ParkingReserveredCar parkingReserveredCar = new ParkingReserveredCar();
                 parkingReserveredCar.setMinutesLeft(rs.getInt("minutesStay"));

@@ -10,7 +10,10 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
 
-    public static StatusBar statusBar;
+    public JLabel quene1 = new JLabel();
+    public JLabel quene2 = new JLabel();
+    public JLabel quene3 = new JLabel();
+    public StatusBar statusBar = new StatusBar();
 
     public MainWindow() {
         this.setJMenuBar(new MyMenuBar());
@@ -43,6 +46,10 @@ public class MainWindow extends JFrame {
 
         Main.label4 = new JLabel("Totaal spots reservered: " + floorController.getNumberOfOpenSpots());
         informationPanel.add(Main.label4);
+
+        informationPanel.add(this.quene1);
+        informationPanel.add(this.quene2);
+        informationPanel.add(this.quene3);
 
         informationPanel.setLayout(new FlowLayout());
 
