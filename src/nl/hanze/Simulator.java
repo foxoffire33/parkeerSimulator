@@ -52,7 +52,7 @@ public class Simulator implements Runnable {
     double PriceReservation = 0;
 
     //running
-    private boolean isRunning = true;
+    public static boolean isRunning = true;
 
 
     public double getLoss() {
@@ -62,7 +62,7 @@ public class Simulator implements Runnable {
 
     private MainWindow mainWindow;
 
-    public Simulator(FloorController controller,MainWindow mainWindow) {
+    public Simulator(FloorController controller, MainWindow mainWindow) {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         entranceReserveredQueue = new CarQueue();
@@ -137,15 +137,25 @@ public class Simulator implements Runnable {
     }
 
     public void run() {
+        System.out.println("the Start");
+
+
         int i = 0;
-        while (this.isRunning && i < 10000) {
+        while (Simulator.isRunning && i < 10000) {
             i++;
             tick();
         }
+
+        if (Simulator.isRunning == false) {
+            this.stop();
+        }
+
+        System.out.println("the end");
+
     }
 
     public void stop() {
-        this.isRunning = false;
+        this.isRunning = true;
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         entranceReserveredQueue = new CarQueue();
@@ -156,10 +166,12 @@ public class Simulator implements Runnable {
         this.minute = 0;
         this.day = 0;
 
+        this.mainWindow.setVisible(false);
+
         this.floorController = MainWindow.getFloorController();
+        this.mainWindow = new MainWindow();
 
         updateViews();
-        Main.mainWindow.repaint();
     }
 
     private void tick() {
@@ -275,7 +287,7 @@ public class Simulator implements Runnable {
                 model.setCarAt(freeLocation, car);
             }
 
-            if (openMembers > 0 && openSpots <= 0 && car instanceof AdHocCar ) {
+            if (openMembers > 0 && openSpots <= 0 && car instanceof AdHocCar) {
                 Location freeLocation = extraMember.getFirstFreeLocation();
                 extraMember.setCarAt(freeLocation, car);
 

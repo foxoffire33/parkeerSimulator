@@ -6,6 +6,7 @@ import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
 import nl.hanze.views.sumulator.floor.FloorViewIndex;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -47,6 +48,20 @@ public class FloorController {
         return null;
     }
 
+    public JPanel getViews() {
+
+        JPanel panel = new JPanel();
+
+        for (FloorModel model : this.models) {
+            panel.add(new FloorViewIndex(model));
+        }
+
+        GridLayout experimentLayout = new GridLayout(0, 4);
+        panel.setLayout(experimentLayout);
+
+        return panel;
+    }
+
     public FloorModel getModel(int modelID) {
         try {
             return this.models.get(modelID);
@@ -81,7 +96,7 @@ public class FloorController {
         model.setCarAt(location, car);
     }
 
-    public void reset(){
+    public void reset() {
         for (FloorModel model : this.models) {
             model.reset();
         }

@@ -16,19 +16,16 @@ public class MyMenuBar extends JMenuBar {
         JMenu fileMenu = new JMenu("File");
 
 
-        JMenuItem restartItem = new JMenuItem("Start Simulation");
+        JMenuItem restartItem = new JMenuItem("Stop Simulation");
         restartItem.addActionListener((e) -> {
-           // Main.Simulatie();
-           // new SimulatorStart();
-            //Main.simulator.stop();
-        //    Main.simulator.run();
+            Simulator.isRunning = false;
         });
         fileMenu.add(restartItem);
+
 
         JMenuItem quitItem = new JMenuItem("Quit");
         quitItem.addActionListener((e) -> System.exit(0));
         fileMenu.add(quitItem);
-
 
 
         this.add(fileMenu);

@@ -16,11 +16,9 @@ public class Main {
 
     public static JLabel label1, label2, label3, label4;
     public static MainWindow mainWindow;
-    public static Thread simulatiethread;
 
     public static void main(String[] args) {
-        mainWindow = new MainWindow();
-
+        Main.mainWindow = new MainWindow();
     }
 
 }
