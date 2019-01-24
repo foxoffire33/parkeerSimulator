@@ -20,7 +20,7 @@ public class MyMenuBar extends JMenuBar {
         restartItem.addActionListener((e) -> {
            // Main.Simulatie();
            // new SimulatorStart();
-            Main.simulator.stop();
+            //Main.simulator.stop();
         //    Main.simulator.run();
         });
         fileMenu.add(restartItem);

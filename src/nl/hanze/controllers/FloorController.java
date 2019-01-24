@@ -36,11 +36,11 @@ public class FloorController {
         }
     }
 
-    public FloorViewIndex getView(FloorType floorType, Color color) {
+    public FloorViewIndex getView(FloorType floorType) {
         try {
             FloorModel model = this.models.get(floorType.getValue());
 
-            return new FloorViewIndex(model, color);
+            return new FloorViewIndex(model);
         } catch (ArrayIndexOutOfBoundsException ex) {
             System.out.println("Floor not found");
         }

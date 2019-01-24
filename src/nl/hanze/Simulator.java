@@ -87,7 +87,7 @@ public class Simulator implements Runnable {
             case 5:
                 return "Saturday";
             case 6:
-                return "Saturday";
+                return "Sunday";
         }
         return "";
     }
@@ -215,13 +215,13 @@ public class Simulator implements Runnable {
         this.mainWindow.revalidate();
 
 
-        Main.lebel1.setText("Number of openspots: " + floorController.getNumberOfOpenSpots());
+        Main.label1.setText("Number of open spots: " + floorController.getNumberOfOpenSpots());
         Main.label2.setText("Member spots: " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
-        Main.label3.setText("Totaal spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
-        Main.label4.setText("Totaal spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        Main.label3.setText("Total spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
+        Main.label4.setText("Total spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
 
-        this.mainWindow.quene1.setText("Quene members:" + this.entrancePassQueue.carsInQueue());
-        this.mainWindow.quene2.setText("Quene reservered:" + this.entranceReserveredQueue.carsInQueue());
+        this.mainWindow.quene1.setText("Queue members:" + this.entrancePassQueue.carsInQueue());
+        this.mainWindow.quene2.setText("Queue reservered:" + this.entranceReserveredQueue.carsInQueue());
         this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
 
         this.mainWindow.quene4.setText("Cars laved : " + this.carsOutQenue);
@@ -254,6 +254,8 @@ public class Simulator implements Runnable {
             Car car = queue.removeCar();
 
             int openSpots = 0;
+            int openMembers = openSpots = floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getNumberOfOpenSpots();
+            FloorModel extraMember = floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue());
 
             FloorModel model;
             if (car instanceof AdHocCar) {
@@ -272,6 +274,13 @@ public class Simulator implements Runnable {
                 Location freeLocation = model.getFirstFreeLocation();
                 model.setCarAt(freeLocation, car);
             }
+
+            if (openMembers > 0 && openSpots <= 0 && car instanceof AdHocCar ) {
+                Location freeLocation = extraMember.getFirstFreeLocation();
+                extraMember.setCarAt(freeLocation, car);
+
+            }
+
             i++;
         }
     }
@@ -332,7 +341,7 @@ public class Simulator implements Runnable {
                 break;
             case FLOOR_TYPE_NONE:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.addCar(new ParkingPassCar());
+                    entrancePassQueue.addCar(new ParkingPassCar()); //members que
                 }
                 break;
             case FLOOR_TYPE_RESAVERED:

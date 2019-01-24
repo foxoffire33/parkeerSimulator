@@ -27,14 +27,14 @@ public class MainWindow extends JFrame {
 
         JPanel panel = new JPanel();
 
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_MENBER, Color.blue));
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_NONE, Color.green));
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_RESAVERED, Color.yellow));
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_MENBER));
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_NONE));
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_RESAVERED));
 
 
         JPanel informationPanel = new JPanel();
-        Main.lebel1 = new JLabel("Totaal spots: " + floorController.getNumberOfOpenSpots());
-        informationPanel.add(Main.lebel1);
+        Main.label1 = new JLabel("Totaal spots: " + floorController.getNumberOfOpenSpots());
+        informationPanel.add(Main.label1);
 
         Main.label2 = new JLabel("Member spots: " + floorController.getNumberOfOpenSpots());
         informationPanel.add(Main.label2);
@@ -73,6 +73,8 @@ public class MainWindow extends JFrame {
         //    Simulator simulator = new Simulator(floorController, this);
         //  simulator.run();
 
+        startSimulator(this);
+
     }
 
     public static Simulator startSimulator(MainWindow frame) {
@@ -80,7 +82,7 @@ public class MainWindow extends JFrame {
         return simulator;
     }
 
-    public static FloorController getFloorController(){
+    public static FloorController getFloorController() {
         //Maak een controller
         floorController = new FloorController();
         //Maak models per floor aan en zet deze in de ArrayList in de controller

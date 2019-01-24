@@ -13,9 +13,9 @@ public class FloorViewIndex extends JPanel {
     private FloorModel model;
     private Color g2Color = Color.black;
 
-    public FloorViewIndex(FloorModel model, Color color) {
+    public FloorViewIndex(FloorModel model) {
         this.model = model;
-        this.g2Color = color;
+
     }
 
     public void paintComponent(Graphics g) {
@@ -28,7 +28,7 @@ public class FloorViewIndex extends JPanel {
             for (int place = 0; place < model.getNumberOfPlaces(); place++) {
                 Car car = this.model.getCarAt(new Location(0,row,place));
 
-                Color color = car == null ? Color.black : this.g2Color;
+                Color color = car == null ? Color.black : car.getColor();
                 g2.setColor(color);
 
                 g2.fillRect(
