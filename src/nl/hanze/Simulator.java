@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-public class Simulator {
+public class Simulator implements Runnable {
 
     private static final int AD_HOC = 0;
     private static final int PASS = 1;
@@ -44,8 +44,21 @@ public class Simulator {
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
-
     int carsOutQenue = 0;
+
+    double priceMember = 30;
+    double PriveNone = 1;
+    //variable maken
+    double PriceReservation = 0;
+
+    //running
+    private boolean isRunning = true;
+
+
+    public double getLoss() {
+        return this.carsOutQenue * this.PriveNone;
+    }
+
 
     private MainWindow mainWindow;
 
@@ -79,11 +92,12 @@ public class Simulator {
         return "";
     }
 
+
+    //todo voorbei rijden
     private void queueCheck(CarQueue queue) {
         if (queue.carsInQueue() > 10) {
             int rendomNumber = getRandomNumberInRange(3, 7);
             for (int i = 0; i < rendomNumber; i++) {
-                queue.removeCar();
                 this.carsOutQenue++;
             }
         }
@@ -123,9 +137,29 @@ public class Simulator {
     }
 
     public void run() {
-        for (int i = 0; i < 10000; i++) {
+        int i = 0;
+        while (this.isRunning && i < 10000) {
+            i++;
             tick();
         }
+    }
+
+    public void stop() {
+        this.isRunning = false;
+        entranceCarQueue = new CarQueue();
+        entrancePassQueue = new CarQueue();
+        entranceReserveredQueue = new CarQueue();
+        paymentCarQueue = new CarQueue();
+        exitCarQueue = new CarQueue();
+
+        this.hour = 0;
+        this.minute = 0;
+        this.day = 0;
+
+        this.floorController = MainWindow.getFloorController();
+
+        updateViews();
+        Main.mainWindow.repaint();
     }
 
     private void tick() {
@@ -189,6 +223,8 @@ public class Simulator {
         this.mainWindow.quene1.setText("Quene members:" + this.entrancePassQueue.carsInQueue());
         this.mainWindow.quene2.setText("Quene reservered:" + this.entranceReserveredQueue.carsInQueue());
         this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
+
+        this.mainWindow.quene4.setText("Cars laved : " + this.carsOutQenue);
 
 
         Date date = new Date();

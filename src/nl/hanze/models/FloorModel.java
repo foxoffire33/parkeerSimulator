@@ -13,6 +13,10 @@ public class FloorModel {
     private Car[][] cars;
     ;
 
+    public void reset(){
+        this.initCarsArray(this.numberOfRows, this.numberOfPlaces);
+    }
+
     public static int NUMBER_OF_MODELS = -1;
 
     public FloorModel(FloorType type) {

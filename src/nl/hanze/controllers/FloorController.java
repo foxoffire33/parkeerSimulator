@@ -57,8 +57,6 @@ public class FloorController {
     }
 
     public int getNumberOfOpenSpots() {
-
-
         int totaal = 0;
 
         for (FloorModel model : this.models) {
@@ -81,6 +79,12 @@ public class FloorController {
     public void setCarAt(Location location, Car car) {
         FloorModel model = this.getModel(location.getFloor());
         model.setCarAt(location, car);
+    }
+
+    public void reset(){
+        for (FloorModel model : this.models) {
+            model.reset();
+        }
     }
 
 

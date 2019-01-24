@@ -14,11 +14,18 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static JLabel lebel1,label2,label3,label4;
+    public static JLabel lebel1, label2, label3, label4;
     public static MainWindow mainWindow;
+    public static Simulator simulator;
 
     public static void main(String[] args) {
-        MainWindow mainWindow = new MainWindow();
+        mainWindow = new MainWindow();
+
+        simulator = MainWindow.startSimulator(mainWindow);
+        simulator.run();
+
+        mainWindow.revalidate();
+        mainWindow.repaint();
     }
 
 }

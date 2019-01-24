@@ -13,19 +13,17 @@ public class MainWindow extends JFrame {
     public JLabel quene1 = new JLabel();
     public JLabel quene2 = new JLabel();
     public JLabel quene3 = new JLabel();
-    public StatusBar statusBar = new StatusBar();
+    public JLabel quene4 = new JLabel("Totaal laved");
+
+    public StatusBar statusBar;
+    private static FloorController floorController;
 
     public MainWindow() {
         this.setJMenuBar(new MyMenuBar());
 
         Container container = this.getContentPane();
 
-        //Maak een controller
-        FloorController floorController = new FloorController();
-        //Maak models per floor aan en zet deze in de ArrayList in de controller
-        floorController.addModel(FloorType.FLOOR_TYPE_MENBER, 4);
-        floorController.addModel(FloorType.FLOOR_TYPE_NONE, 8);
-        floorController.addModel(FloorType.FLOOR_TYPE_RESAVERED, 2);
+        floorController = getFloorController();
 
         JPanel panel = new JPanel();
 
@@ -50,6 +48,7 @@ public class MainWindow extends JFrame {
         informationPanel.add(this.quene1);
         informationPanel.add(this.quene2);
         informationPanel.add(this.quene3);
+        informationPanel.add(this.quene4);
 
         informationPanel.setLayout(new FlowLayout());
 
@@ -71,9 +70,24 @@ public class MainWindow extends JFrame {
         this.pack();
         this.setVisible(true);
 
-        Simulator simulator = new Simulator(floorController, this);
-        simulator.run();
+        //    Simulator simulator = new Simulator(floorController, this);
+        //  simulator.run();
 
+    }
+
+    public static Simulator startSimulator(MainWindow frame) {
+        Simulator simulator = new Simulator(MainWindow.floorController, frame);
+        return simulator;
+    }
+
+    public static FloorController getFloorController(){
+        //Maak een controller
+        floorController = new FloorController();
+        //Maak models per floor aan en zet deze in de ArrayList in de controller
+        floorController.addModel(FloorType.FLOOR_TYPE_MENBER, 4);
+        floorController.addModel(FloorType.FLOOR_TYPE_NONE, 8);
+        floorController.addModel(FloorType.FLOOR_TYPE_RESAVERED, 2);
+        return floorController;
     }
 
 }
