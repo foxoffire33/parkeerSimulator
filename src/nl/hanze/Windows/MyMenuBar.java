@@ -22,6 +22,12 @@ public class MyMenuBar extends JMenuBar {
         });
         fileMenu.add(restartItem);
 
+        JMenuItem startItem = new JMenuItem("Start Simulation");
+        startItem.addActionListener((e) -> {
+           // Main.simulatiethread = new Thread(new Simulator(MainWindow.getFloorController(),Main.mainWindow));
+
+        });
+        fileMenu.add(startItem);
 
         JMenuItem quitItem = new JMenuItem("Quit");
         quitItem.addActionListener((e) -> System.exit(0));
