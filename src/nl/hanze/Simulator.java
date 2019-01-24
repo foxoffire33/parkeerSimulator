@@ -36,10 +36,10 @@ public class Simulator implements Runnable {
 
     private int tickPause = 100;
 
-    int weekDayArrivals = 200; // average number of arriving cars per hour
-    int weekendArrivals = 400; // average number of arriving cars per hour
-    int weekDayPassArrivals = 80; // average number of arriving cars per hour
-    int weekendPassArrivals = 60; // average number of arriving cars per hour
+    int weekDayArrivals = 100; // average number of arriving cars per hour
+    int weekendArrivals = 200; // average number of arriving cars per hour
+    int weekDayPassArrivals = 40; // average number of arriving cars per hour
+    int weekendPassArrivals = 30; // average number of arriving cars per hour
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -62,13 +62,13 @@ public class Simulator implements Runnable {
 
     private MainWindow mainWindow;
 
-    public Simulator(FloorController floorController, MainWindow mainWindow) {
+    public Simulator(FloorController controller,MainWindow mainWindow) {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         entranceReserveredQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        this.floorController = floorController;
+        this.floorController = controller;
         this.mainWindow = mainWindow;
     }
 

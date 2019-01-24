@@ -69,16 +69,17 @@ public class MainWindow extends JFrame {
 
         this.pack();
         this.setVisible(true);
-
-        //    Simulator simulator = new Simulator(floorController, this);
-        //  simulator.run();
-
-        startSimulator(this);
+//
+        Simulator simulator = new Simulator(floorController, this);
+        simulator.run();
+//
+//
+//        startSimulator(this);
 
     }
 
     public static Simulator startSimulator(MainWindow frame) {
-        Simulator simulator = new Simulator(MainWindow.floorController, frame);
+        Simulator simulator = new Simulator(MainWindow.getFloorController(), frame);
         return simulator;
     }
 
