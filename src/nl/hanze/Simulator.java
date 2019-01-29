@@ -176,6 +176,7 @@ public class Simulator implements Runnable {
 
     private void tick() {
         advanceTime();
+        checkTime();
         handleExit();
         getReserved();
         updateViews();
@@ -233,7 +234,6 @@ public class Simulator implements Runnable {
     private void advanceTime() {
         // Advance the time by one minute.
         minute += timescale;
-//        checkTime();
         while (minute > 59) {
             minute -= 60;
             hour++;
