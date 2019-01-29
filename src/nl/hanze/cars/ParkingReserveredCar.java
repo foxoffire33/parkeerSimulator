@@ -14,6 +14,14 @@ public class ParkingReserveredCar extends Car {
         this.setHasToPay(false);
     }
 
+    public static double getPrice() {
+        return price;
+    }
+
+    public static void setPrice(double price) {
+        ParkingReserveredCar.price = price;
+    }
+
     public Color getColor() {
         return COLOR;
     }

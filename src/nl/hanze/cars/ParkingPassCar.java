@@ -18,4 +18,12 @@ ParkingPassCar extends Car {
     public Color getColor(){
     	return COLOR;
     }
+
+    public static double getPrice() {
+        return price;
+    }
+
+    public static void setPrice(double price) {
+        ParkingPassCar.price = price;
+    }
 }

@@ -2,6 +2,9 @@ package nl.hanze.Windows;
 
 
 import nl.hanze.Simulator;
+import nl.hanze.cars.AdHocCar;
+import nl.hanze.cars.ParkingPassCar;
+import nl.hanze.cars.ParkingReserveredCar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -94,12 +97,13 @@ public class SimulatorStart extends JFrame {
             MainWindow.noneRows = Integer.parseInt(this.textField.getText());
             MainWindow.reservationRows = Integer.parseInt(this.textField3.getText());
 
-            Simulator.priceMember = Double.parseDouble(this.textField4.getText().replace(',', '.'));
-            Simulator.PriceNone = Double.parseDouble(this.textField.getText().replace(',', '.'));
-            Simulator.PriceReservation = Double.parseDouble(this.textField3.getText().replace(',', '.'));
+            ParkingPassCar.setPrice(Double.parseDouble(this.textField4.getText().replace(',', '.')));
+            AdHocCar.setPrice(Double.parseDouble(this.textField.getText().replace(',', '.')));
+            ParkingReserveredCar.setPrice(Double.parseDouble(this.textField3.getText().replace(',', '.')));
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "U kunt alleen Ints in vullen");
+            return;
         }
 
         Simulator.isRunning = false;
