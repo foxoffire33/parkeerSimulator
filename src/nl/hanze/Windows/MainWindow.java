@@ -13,7 +13,7 @@ public class MainWindow extends JFrame {
     public JLabel quene1 = new JLabel();
     public JLabel quene2 = new JLabel();
     public JLabel quene3 = new JLabel();
-    public JLabel quene4 = new JLabel("Totaal leaved");
+    public JLabel quene4 = new JLabel("Total left");
 
     public static int membersRows = 4;
     public static int noneRows = 6;
@@ -57,6 +57,8 @@ public class MainWindow extends JFrame {
 
         Main.label7 = new JLabel("Reservations none: " + floorController.getNumberOfOpenSpots());
         informationPanel.add(Main.label3);
+
+        Main.label8 = new JLabel();
 
         informationPanel.add(this.quene1);
         informationPanel.add(this.quene2);

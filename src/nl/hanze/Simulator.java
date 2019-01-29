@@ -51,6 +51,7 @@ public class Simulator implements Runnable {
     private double membersWinst = 0;
     private double overigeWinst = 0;
     private double reserverdWinst = 0;
+    double totaleWinst = 0;
 
     private int membersLevingQenue = 0;
     private int noneLevingQenue = 0;
@@ -58,10 +59,12 @@ public class Simulator implements Runnable {
 
 
     //deze variabelen staan los van de input variabellen hierboven en worden gebruikt om het origineel te behouden
-    private int orWeekdayArrival = weekDayArrivals;
-    private int orWeekendArrivals = weekendArrivals;
-    private int orWeekdayPassArrivals = weekDayPassArrivals;
-    private int orWeekendPassArrivals = weekendPassArrivals;
+    int orWeekdayArrivals = weekDayArrivals;
+    int orWeekendArrivals = weekendArrivals;
+    int orWeekdayPassArrivals = weekDayPassArrivals;
+    int orWeekendPassArrivals = weekendPassArrivals;
+    private boolean offtime = false;
+    private boolean busyDay = false;
 
     private int enterSpeed = 3; // number of cars that can enter per minute
     private int paymentSpeed = 7; // number of cars that can pay per minute
@@ -171,7 +174,7 @@ public class Simulator implements Runnable {
 
     private void tick() {
         advanceTime();
-        checkTime();
+       // checkTime();
         handleExit();
         getReserved();
         updateViews();
@@ -182,48 +185,6 @@ public class Simulator implements Runnable {
             e.printStackTrace();
         }
         handleEntrance();
-    }
-
-    //functie om de drukte van de parkeergarage aan te passen aan de tijd.
-    private void checkTime() {
-        if (day == 5 || day == 4 || day == 3) {
-            switch (this.hour) {
-                case 17:
-                    for (int i = 0; i < 68; i++) {
-                        AdHocCar car = new AdHocCar();
-                        entranceCarQueue.addCar(car);
-                    }
-                    for (int i = 0; i < 138; i++) {
-                        ParkingPassCar car = new ParkingPassCar();
-                        entrancePassQueue.addCar(car);
-                    }
-                case 23:
-                    weekDayArrivals = orWeekdayPassArrivals;
-                    weekendArrivals = orWeekendArrivals;
-                    weekDayPassArrivals = orWeekdayPassArrivals;
-                    weekendPassArrivals = orWeekendPassArrivals;
-            }
-        }
-
-        if (day == 6) {
-            switch (this.hour) {
-                case 12:
-                    for (int i = 0; i < 68; i++) {
-                        AdHocCar csr = new AdHocCar();
-                        entranceCarQueue.addCar(csr);
-
-                    }
-                    for (int i = 0; i < 138; i++) {
-                        ParkingPassCar car = new ParkingPassCar();
-                        entrancePassQueue.addCar(car);
-                    }
-                case 17:
-                    weekDayArrivals = orWeekdayPassArrivals;
-                    weekendArrivals = orWeekendArrivals;
-                    weekDayPassArrivals = orWeekdayPassArrivals;
-                    weekendPassArrivals = orWeekendPassArrivals;
-            }
-        }
     }
 
     private void advanceTime() {
@@ -280,20 +241,20 @@ public class Simulator implements Runnable {
         this.mainWindow.revalidate();
 
 
-        Main.label1.setText("Number of open spots: " + floorController.getNumberOfOpenSpots());
-        Main.label2.setText("Member spots: " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
-        Main.label3.setText("Total spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
-        Main.label4.setText("Total spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        //Main.label1.setText("Total amount of free spots: " + floorController.getNumberOfOpenSpots() + "/" + floorController.getNumberOfSpots() );
+        Main.label2.setText("Member " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
+        Main.label3.setText("Non-Member " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
+        Main.label4.setText("Reserved " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        Main.label5.setText("Winst van Non-Members: €" + overigeWinst);
+        Main.label6.setText("Winst van Members: €" + membersWinst);
+        Main.label7.setText("Winst van Reserveerders: €" + reserverdWinst);
+        Main.label8.setText("Totale winst: €" + totaleWinst);
 
         this.mainWindow.quene1.setText("Queue members:" + this.entrancePassQueue.carsInQueue());
         this.mainWindow.quene2.setText("Queue reservered:" + this.entranceReserveredQueue.carsInQueue());
         this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
 
-        Main.label5.setText("Mem lived: " + this.membersLevingQenue);
-        Main.label6.setText("None lived: " + this.noneLevingQenue);
-        Main.label7.setText("Reservations none: " + this.reserverdLevingQenue);
-
-        this.mainWindow.quene4.setText("Cars laved : " + this.carsOutQenue);
+        this.mainWindow.quene4.setText("Cars left: " + this.membersLevingQenue + "/" + this.noneLevingQenue + "/" + this.reserverdLevingQenue);
 
 
         Date date = new Date();
@@ -454,5 +415,82 @@ public class Simulator implements Runnable {
 
         exitCarQueue.addCar(car);
     }
+
+    //functie om de drukte van de parkeergarage aan te passen aan de tijd.
+    private void checkTime() {
+        busyDay = false;
+
+        if (this.hour == 1) {
+
+          //  weekDayArrivals = orWeekdayArrivals / 4;
+            weekendArrivals = orWeekendArrivals / 4;
+            weekDayPassArrivals = orWeekdayPassArrivals / 4;
+            weekendPassArrivals = orWeekendPassArrivals / 4;
+            offtime = true;
+        }
+
+        if (this.hour == 7) {
+            //weekDayArrivals = orWeekdayArrivals;
+            weekendArrivals = orWeekendArrivals;
+            weekDayPassArrivals = orWeekdayPassArrivals;
+            weekendPassArrivals = orWeekendPassArrivals;
+            offtime = false;
+        }
+
+        if (day == 5 || day == 4 || day == 3) {
+            busyDay = true;
+            switch (this.hour) {
+                case 17:
+                    for (int i = 0; i < 68; i++) {
+                        AdHocCar car = new AdHocCar();
+                        entranceCarQueue.addCar(car);
+                    }
+                    for (int i = 0; i < 138; i++) {
+                        ParkingPassCar car = new ParkingPassCar();
+                        entrancePassQueue.addCar(car);
+                    }
+            }
+        }
+
+        if (day == 6) {
+            busyDay = true;
+            if (this.hour == 12){
+                for (int i = 0; i < 68; i++) {
+                    AdHocCar csr = new AdHocCar();
+                    entranceCarQueue.addCar(csr);
+                }
+
+                for (int i = 0; i < 138; i++) {
+                    ParkingPassCar car = new ParkingPassCar();
+                    entrancePassQueue.addCar(car);
+                }}
+        }
+    }
+
+    //functie die kijkt of het een "off time" is
+    private String checkOfftime()
+    {
+        if (offtime){return " (Offtime: 75% Less visitors) ";}
+        return " (No offtime)" ;
+    }
+
+    //functie die kijkt of het een drukke dag is
+    private String checkBusyDay() {
+        if (busyDay) {
+            switch (this.day) {
+                case 3:
+                    return "(Thursday: more vistors expected around 18:00)";
+                case 4:
+                    return "(Friday: more vistors expected around 18:00)";
+                case 5:
+                    return "(Saturday: more vistors expected around 18:00)";
+                case 6:
+                    return "(Sunday: more vistors expected around 12:00)";
+            }
+        }
+        return " (No busyday today)";
+    }
+
+
 
 }
