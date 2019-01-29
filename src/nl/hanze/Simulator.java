@@ -48,17 +48,8 @@ public class Simulator implements Runnable {
     int carsOutQenue = 0;
     int dubbelParkeren = 0;
 
-    public static double priceMember = 30;
-    public static double PriceNone = 1;
-    public static double PriceReservation = 90;
-
     //running
     public static boolean isRunning = true;
-
-
-    public double getLoss() {
-        return this.carsOutQenue * this.PriceNone;
-    }
 
 
     private MainWindow mainWindow;
