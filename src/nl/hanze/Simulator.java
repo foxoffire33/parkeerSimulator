@@ -303,7 +303,7 @@ public class Simulator implements Runnable {
         int numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_MENBER);
 
-        numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals) + 50;
+        numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_NONE);
 
         //  numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
@@ -416,6 +416,7 @@ public class Simulator implements Runnable {
                 }
                 break;
             case FLOOR_TYPE_NONE:
+                numberOfCars += 100;
                 for (int i = 0; i < numberOfCars; i++) {
                     this.addCarToQunue(entranceCarQueue, new ParkingPassCar());
                 }
@@ -445,10 +446,8 @@ public class Simulator implements Runnable {
     }
 
     private void addCarToQunue(CarQueue queue, Car car) {
-        if (!queue.isFull()) {
-            if (!queue.addCar(car)) {
-                this.carsOutQenue++;
-            }
+        if (!queue.addCar(car)) {
+            this.carsOutQenue++;
         }
     }
 
