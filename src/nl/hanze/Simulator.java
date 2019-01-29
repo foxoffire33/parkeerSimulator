@@ -40,8 +40,8 @@ public class Simulator implements Runnable {
     private int tickPause = 100;
 
 
-    int weekDayArrivals = 100; // average number of arriving cars per hour was 100, 27%, piek + 67
-    int weekendArrivals = 200; // average number of arriving cars per hour was 200, 55%, piek + 137
+    int weekDayArrivals = 50; // average number of arriving cars per hour was 100, 27%, piek + 67
+    int weekendArrivals = 100; // average number of arriving cars per hour was 200, 55%, piek + 137
     int weekDayPassArrivals = 40; // average number of arriving cars per hour was 40, 10%, piek + 26
     int weekendPassArrivals = 30; // average number of arriving cars per hour was 30, 8%, piek + 20
 
@@ -190,67 +190,50 @@ public class Simulator implements Runnable {
 
     //functie om de drukte van de parkeergarage aan te passen aan de tijd.
     private void checkTime() {
-
-
         if (day == 5 || day == 4 || day == 3) {
-
             switch (this.hour) {
-
                 case 17:
                     for (int i = 0; i < 68; i++) {
                         AdHocCar car = new AdHocCar();
                         entranceCarQueue.addCar(car);
-
                     }
-
                     for (int i = 0; i < 138; i++) {
                         ParkingPassCar car = new ParkingPassCar();
                         entrancePassQueue.addCar(car);
                     }
-
-
                 case 23:
                     weekDayArrivals = orWeekdayPassArrivals;
                     weekendArrivals = orWeekendArrivals;
                     weekDayPassArrivals = orWeekdayPassArrivals;
                     weekendPassArrivals = orWeekendPassArrivals;
-
             }
         }
 
         if (day == 6) {
             switch (this.hour) {
-
                 case 12:
                     for (int i = 0; i < 68; i++) {
                         AdHocCar csr = new AdHocCar();
                         entranceCarQueue.addCar(csr);
 
                     }
-
                     for (int i = 0; i < 138; i++) {
                         ParkingPassCar car = new ParkingPassCar();
                         entrancePassQueue.addCar(car);
                     }
-
                 case 17:
                     weekDayArrivals = orWeekdayPassArrivals;
                     weekendArrivals = orWeekendArrivals;
                     weekDayPassArrivals = orWeekdayPassArrivals;
                     weekendPassArrivals = orWeekendPassArrivals;
-
             }
-
-
         }
-
-
     }
 
     private void advanceTime() {
         // Advance the time by one minute.
         minute += timescale;
-        checkTime();
+//        checkTime();
         while (minute > 59) {
             minute -= 60;
             hour++;
@@ -281,6 +264,10 @@ public class Simulator implements Runnable {
         queueCheck(entrancePassQueue);
         queueCheck(entranceCarQueue);
         queueCheck(entranceReserveredQueue);
+
+        entranceCarQueue.tick();
+        entrancePassQueue.tick();
+        entranceReserveredQueue.tick();
     }
 
     private void handleExit() {
@@ -396,7 +383,6 @@ public class Simulator implements Runnable {
             Car car = paymentCarQueue.removeCar();
 
 
-
             carLeavesSpot(car);
             i++;
         }
@@ -429,16 +415,17 @@ public class Simulator implements Runnable {
             case FLOOR_TYPE_MENBER:
                 for (int i = 0; i < numberOfCars; i++) {
                     entranceCarQueue.addCar(new AdHocCar());
+                    this.addCarToQunue(entranceCarQueue, new AdHocCar());
                 }
                 break;
             case FLOOR_TYPE_NONE:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.addCar(new ParkingPassCar()); //members que
+                    this.addCarToQunue(entranceCarQueue, new ParkingPassCar());
                 }
                 break;
             case FLOOR_TYPE_RESAVERED:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entranceReserveredQueue.addCar(new ParkingReserveredCar());
+                    this.addCarToQunue(entranceCarQueue, new ParkingReserveredCar());
                 }
                 break;
         }
@@ -458,6 +445,12 @@ public class Simulator implements Runnable {
         }
 
         exitCarQueue.addCar(car);
+    }
+
+    private void addCarToQunue(CarQueue queue, Car car) {
+        if (!queue.isFull()) {
+            queue.addCar(car);
+        }
     }
 
 }

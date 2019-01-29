@@ -15,7 +15,7 @@ public class MainWindow extends JFrame {
     public JLabel quene3 = new JLabel();
     public JLabel quene4 = new JLabel("Totaal leaved");
 
-    public static int membersRows = 2;
+    public static int membersRows = 4;
     public static int noneRows = 6;
     public static int reservationRows = 4;
 
