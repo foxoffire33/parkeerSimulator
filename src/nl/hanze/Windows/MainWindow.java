@@ -13,7 +13,7 @@ public class MainWindow extends JFrame {
     public JLabel quene1 = new JLabel();
     public JLabel quene2 = new JLabel();
     public JLabel quene3 = new JLabel();
-    public JLabel quene4 = new JLabel("Totaal leaved");
+    public JLabel quene4 = new JLabel("Total left");
 
     public static int membersRows = 2;
     public static int noneRows = 6;
