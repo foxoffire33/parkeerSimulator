@@ -50,13 +50,16 @@ public class Simulator implements Runnable {
     double membersWinst = 0;
     double overigeWinst = 0;
     double reserverdWinst = 0;
+    double totaleWinst = 0;
 
 
     //deze variabelen staan los van de input variabellen hierboven en worden gebruikt om het origineel te behouden
-    int orWeekdayArrival = weekDayArrivals;
+    int orWeekdayArrivals = weekDayArrivals;
     int orWeekendArrivals = weekendArrivals;
     int orWeekdayPassArrivals = weekDayPassArrivals;
     int orWeekendPassArrivals = weekendPassArrivals;
+    private boolean offtime = false;
+    private boolean busyDay = false;
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -189,11 +192,29 @@ public class Simulator implements Runnable {
     }
 
     //functie om de drukte van de parkeergarage aan te passen aan de tijd.
+    //functie om de drukte van de parkeergarage aan te passen aan de tijd.
     private void checkTime() {
+        busyDay = false;
 
+        if (this.hour == 1) {
+
+            weekDayArrivals = orWeekdayArrivals / 4;
+            weekendArrivals = orWeekendArrivals / 4;
+            weekDayPassArrivals = orWeekdayPassArrivals / 4;
+            weekendPassArrivals = orWeekendPassArrivals / 4;
+            offtime = true;
+        }
+
+        if (this.hour == 7) {
+            weekDayArrivals = orWeekdayArrivals;
+            weekendArrivals = orWeekendArrivals;
+            weekDayPassArrivals = orWeekdayPassArrivals;
+            weekendPassArrivals = orWeekendPassArrivals;
+            offtime = false;
+        }
 
         if (day == 5 || day == 4 || day == 3) {
-
+            busyDay = true;
             switch (this.hour) {
 
                 case 17:
@@ -207,45 +228,55 @@ public class Simulator implements Runnable {
                         ParkingPassCar car = new ParkingPassCar();
                         entrancePassQueue.addCar(car);
                     }
-
-
-                case 23:
-                    weekDayArrivals = orWeekdayPassArrivals;
-                    weekendArrivals = orWeekendArrivals;
-                    weekDayPassArrivals = orWeekdayPassArrivals;
-                    weekendPassArrivals = orWeekendPassArrivals;
-
             }
         }
 
         if (day == 6) {
-            switch (this.hour) {
 
-                case 12:
-                    for (int i = 0; i < 68; i++) {
-                        AdHocCar csr = new AdHocCar();
-                        entranceCarQueue.addCar(csr);
+            busyDay = true;
 
-                    }
+            if (this.hour == 12){
 
-                    for (int i = 0; i < 138; i++) {
-                        ParkingPassCar car = new ParkingPassCar();
-                        entrancePassQueue.addCar(car);
-                    }
+                for (int i = 0; i < 68; i++) {
+                    AdHocCar csr = new AdHocCar();
+                    entranceCarQueue.addCar(csr);
 
-                case 17:
-                    weekDayArrivals = orWeekdayPassArrivals;
-                    weekendArrivals = orWeekendArrivals;
-                    weekDayPassArrivals = orWeekdayPassArrivals;
-                    weekendPassArrivals = orWeekendPassArrivals;
+                }
 
-            }
-
-
+                for (int i = 0; i < 138; i++) {
+                    ParkingPassCar car = new ParkingPassCar();
+                    entrancePassQueue.addCar(car);
+                }}
         }
-
-
     }
+
+    //functie die kijkt of het een "off time" is
+    private String checkOfftime()
+    {
+        if (offtime){return " (Offtime: 75% Less visitors) ";}
+        return " (No offtime)" ;
+    }
+
+    //functie die kijkt of het een drukke dag is
+    private String checkBusyDay() {
+        if (busyDay) {
+            switch (this.day) {
+                case 3:
+                    return "(Thursday: more vistors expected around 18:00)";
+                case 4:
+                    return "(Friday: more vistors expected around 18:00)";
+                case 5:
+                    return "(Saturday: more vistors expected around 18:00)";
+                case 6:
+                    return "(Sunday: more vistors expected around 12:00)";
+            }
+        }
+        return " (No busyday today)";
+    }
+
+
+
+
 
     private void advanceTime() {
         // Advance the time by one minute.
@@ -295,23 +326,27 @@ public class Simulator implements Runnable {
         this.mainWindow.revalidate();
 
 
-        Main.label1.setText("Number of open spots: " + floorController.getNumberOfOpenSpots());
-        Main.label2.setText("Member spots: " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
-        Main.label3.setText("Total spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
-        Main.label4.setText("Total spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        Main.label1.setText("Total amount of free spots: " + floorController.getNumberOfOpenSpots() + "/" + floorController.getNumberOfSpots() );
+        Main.label2.setText("Member " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
+        Main.label3.setText("Non-Member " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
+        Main.label4.setText("Reserved " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        Main.label5.setText("Winst van Non-Members: €" + overigeWinst);
+        Main.label6.setText("Winst van Members: €" + membersWinst);
+        Main.label7.setText("Winst van Reserveerders: €" + reserverdWinst);
+        Main.label8.setText("Totale winst: €" + totaleWinst);
 
         this.mainWindow.quene1.setText("Queue members:" + this.entrancePassQueue.carsInQueue());
         this.mainWindow.quene2.setText("Queue reservered:" + this.entranceReserveredQueue.carsInQueue());
         this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
 
-        this.mainWindow.quene4.setText("Cars laved : " + this.carsOutQenue);
+        this.mainWindow.quene4.setText("Cars left: " + this.carsOutQenue);
 
 
         Date date = new Date();
         String strDateFormat = "hh:mm:ss a";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         String formattedDate = dateFormat.format(date);
-        this.mainWindow.statusBar.setMessage("Running... " + this.getDayString() + "  " + this.hour + ":" + this.minute);
+        this.mainWindow.statusBar.setMessage(" Running... " + this.getDayString() + "  " + this.hour + ":" + this.minute + " " + checkOfftime() + checkBusyDay());
 
     }
 
@@ -383,30 +418,40 @@ public class Simulator implements Runnable {
                 car.setIsPaying(true);
                 paymentCarQueue.addCar(car);
             } else {
+                if (car instanceof AdHocCar) {membersWinst += ((AdHocCar) car).getPrice();
+                    totaleWinst += ((AdHocCar) car).getPrice();
+                }
+                if (car instanceof ParkingReserveredCar) {reserverdWinst += ((ParkingReserveredCar) car).getPrice();
+                    totaleWinst += ((ParkingReserveredCar) car).getPrice();
                 carLeavesSpot(car);
             }
             car = floorController.getFirstLeavingCar();
         }
-    }
+    }}
 
     private void carsPaying() {
         // Let cars pay.
         int i = 0;
         while (paymentCarQueue.carsInQueue() > 0 && i < paymentSpeed) {
             Car car = paymentCarQueue.removeCar();
+            if (car instanceof ParkingPassCar) {
+                overigeWinst += ((ParkingPassCar) car).getPrice();
+                totaleWinst += ((ParkingPassCar) car).getPrice();
+            }
+
 
 
 
             carLeavesSpot(car);
             i++;
-        }
-    }
+        }}
+
 
     private void carsLeaving() {
         // Let cars leave.
         int i = 0;
         while (exitCarQueue.carsInQueue() > 0 && i < exitSpeed) {
-            exitCarQueue.removeCar();
+            Car car = exitCarQueue.removeCar();
             i++;
         }
     }
