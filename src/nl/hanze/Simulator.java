@@ -50,6 +50,7 @@ public class Simulator implements Runnable {
     double membersWinst = 0;
     double overigeWinst = 0;
     double reserverdWinst = 0;
+    double totaleWinst = reserverdWinst + overigeWinst + membersWinst;
 
 
     //deze variabelen staan los van de input variabellen hierboven en worden gebruikt om het origineel te behouden
@@ -295,16 +296,22 @@ public class Simulator implements Runnable {
         this.mainWindow.revalidate();
 
 
-        Main.label1.setText("Number of open spots: " + floorController.getNumberOfOpenSpots());
-        Main.label2.setText("Member spots: " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
-        Main.label3.setText("Total spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
-        Main.label4.setText("Total spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        Main.label1.setText("Total amount of free spots: " + floorController.getNumberOfOpenSpots());
+        Main.label2.setText("Member " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
+        Main.label3.setText("Non-Member " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
+        Main.label4.setText("Reserved " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        Main.label5.setText("Winst van Non-Members: €" + overigeWinst);
+        Main.label6.setText("Winst van Members: €" + membersWinst);
+        Main.label7.setText("Winst van Reserveerders: €" + reserverdWinst);
+        Main.label8.setText("Totale winst: €" + totaleWinst);
+
+
 
         this.mainWindow.quene1.setText("Queue members:" + this.entrancePassQueue.carsInQueue());
         this.mainWindow.quene2.setText("Queue reservered:" + this.entranceReserveredQueue.carsInQueue());
         this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
 
-        this.mainWindow.quene4.setText("Cars laved : " + this.carsOutQenue);
+        this.mainWindow.quene4.setText("Cars left : " + this.carsOutQenue);
 
 
         Date date = new Date();
@@ -383,6 +390,12 @@ public class Simulator implements Runnable {
                 car.setIsPaying(true);
                 paymentCarQueue.addCar(car);
             } else {
+                if (car instanceof ParkingPassCar) {membersWinst += ((ParkingPassCar) car).getPrice();
+                    totaleWinst += ((ParkingPassCar) car).getPrice();
+                }
+                if (car instanceof ParkingReserveredCar) {reserverdWinst += ((ParkingReserveredCar) car).getPrice();
+                    totaleWinst += ((ParkingReserveredCar) car).getPrice();
+                }
                 carLeavesSpot(car);
             }
             car = floorController.getFirstLeavingCar();
@@ -395,8 +408,9 @@ public class Simulator implements Runnable {
         while (paymentCarQueue.carsInQueue() > 0 && i < paymentSpeed) {
             Car car = paymentCarQueue.removeCar();
 
-
-
+            if (car instanceof AdHocCar) {overigeWinst += ((AdHocCar) car).getPrice();
+                totaleWinst += ((AdHocCar) car).getPrice();
+            }
             carLeavesSpot(car);
             i++;
         }
