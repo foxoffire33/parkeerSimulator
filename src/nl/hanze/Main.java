@@ -14,7 +14,11 @@ import java.util.ArrayList;
 
 public class Main {
 
+<<<<<<< HEAD
     public static JLabel label1, label2, label3, label4, label5, label6, label7,label8;
+=======
+    public static JLabel label1, label2, label3, label4, label5, label6, label7, label8;
+>>>>>>> origin/master
     public static MainWindow mainWindow;
 
     public static void main(String[] args) {

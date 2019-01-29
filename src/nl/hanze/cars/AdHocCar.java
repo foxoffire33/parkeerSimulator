@@ -3,6 +3,8 @@ package nl.hanze.cars;
 import java.util.Random;
 import java.awt.*;
 
+//dit is de auto voor members
+
 public class AdHocCar extends Car {
     public static double price = 1;
     private static final Color COLOR = Color.red;

@@ -3,6 +3,8 @@ package nl.hanze.cars;
 import java.awt.*;
 import java.util.Random;
 
+//dit is de auto voor reserveerders
+
 public class ParkingReserveredCar extends Car {
     public static double price = 90;
     private static final Color COLOR = Color.YELLOW;

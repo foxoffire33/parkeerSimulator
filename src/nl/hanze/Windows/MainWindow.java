@@ -49,6 +49,7 @@ public class MainWindow extends JFrame {
         Main.label4 = new JLabel("Totaal spots reservered: " + floorController.getNumberOfOpenSpots());
         informationPanel.add(Main.label4);
 
+<<<<<<< HEAD
         Main.label5 = new JLabel("Mem lived: " + floorController.getNumberOfOpenSpots());
         informationPanel.add(Main.label1);
 
@@ -59,6 +60,16 @@ public class MainWindow extends JFrame {
         informationPanel.add(Main.label3);
 
         Main.label8 = new JLabel();
+=======
+        Main.label5 = new JLabel();
+        informationPanel.add(Main.label5);
+        Main.label6 = new JLabel();
+        informationPanel.add(Main.label6);
+        Main.label7 = new JLabel();
+        informationPanel.add(Main.label7);
+        Main.label8 = new JLabel();
+        informationPanel.add(Main.label8);
+>>>>>>> origin/master
 
         informationPanel.add(this.quene1);
         informationPanel.add(this.quene2);

@@ -8,12 +8,12 @@ public class CarQueue {
     private Queue<Car> queue = new LinkedList<>();
     private int maxCars = 10;
 
-    public boolean addCar(Car car) {
-        if (this.maxCars > this.carsInQueue()) {
+   public boolean addCar(Car car) {
+       if (this.maxCars > this.carsInQueue()) {
             return queue.add(car);
         }
         System.out.println("Het is weer eens tien");
-        return false;
+       return false;
     }
 
     public Car removeCar() {

@@ -3,6 +3,8 @@ package nl.hanze.cars;
 import java.util.Random;
 import java.awt.*;
 
+//dit is de auto voor niet members;
+
 public class
 ParkingPassCar extends Car {
     public static double price = 30;
