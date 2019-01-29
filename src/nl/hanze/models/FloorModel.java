@@ -3,8 +3,9 @@ package nl.hanze.models;
 import nl.hanze.cars.Car;
 import nl.hanze.Location;
 import nl.hanze.enums.FloorType;
+import nl.hanze.mvc.Model;
 
-public class FloorModel {
+public class FloorModel extends Model {
 
     private FloorType type;
     private int numberOfRows = 4;

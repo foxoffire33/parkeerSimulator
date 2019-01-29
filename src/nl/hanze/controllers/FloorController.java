@@ -4,13 +4,14 @@ import nl.hanze.cars.Car;
 import nl.hanze.Location;
 import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
+import nl.hanze.mvc.Controller;
 import nl.hanze.views.sumulator.floor.FloorViewIndex;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class FloorController {
+public class FloorController extends Controller {
 
     private ArrayList<FloorModel> models = new ArrayList<>();
     private FloorViewIndex view;

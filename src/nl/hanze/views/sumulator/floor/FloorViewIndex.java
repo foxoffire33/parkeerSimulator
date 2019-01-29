@@ -3,12 +3,13 @@ package nl.hanze.views.sumulator.floor;
 import nl.hanze.cars.Car;
 import nl.hanze.Location;
 import nl.hanze.models.FloorModel;
+import nl.hanze.mvc.View;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class FloorViewIndex extends JPanel {
+public class FloorViewIndex extends View {
 
     private FloorModel model;
     private Color g2Color = Color.black;
