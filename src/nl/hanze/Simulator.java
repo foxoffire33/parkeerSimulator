@@ -10,6 +10,7 @@ import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
 import nl.hanze.controllers.*;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -285,12 +286,21 @@ public class Simulator implements Runnable {
             if (openSpots > 0) {
                 Location freeLocation = model.getFirstFreeLocation();
                 model.setCarAt(freeLocation, car);
+
+                int deubelParkeren = (int) (Math.random() * 50 + 1);
+                if (deubelParkeren == 1) {
+                    freeLocation = model.getFirstFreeLocation();
+                    Car clone = new AdHocCar();
+                    clone.setDubelParkeren(true);
+                    model.setCarAt(freeLocation, clone);
+                }
+
+
             }
 
             if (openMembers > 0 && openSpots <= 0 && car instanceof AdHocCar) {
                 Location freeLocation = extraMember.getFirstFreeLocation();
                 extraMember.setCarAt(freeLocation, car);
-
             }
 
             i++;
@@ -368,6 +378,13 @@ public class Simulator implements Runnable {
         Location carLOcation = car.getLocation();
         FloorModel model = this.floorController.getModel(carLOcation.getFloor());
         model.removeCarAt(carLOcation);
+        if (car.isDubelParkeren()) {
+            //eerst volgende car in het model.
+            Car car2 = model.getNextCar();
+            if (car2 != null) {
+                model.removeCarAt(car2.getLocation());
+            }
+        }
 
         exitCarQueue.addCar(car);
     }

@@ -10,11 +10,13 @@ public abstract class Car {
     private int minutesLeft;
     private boolean isPaying;
     private boolean hasToPay;
+    private boolean dubelParkeren;
 
     /**
      * Constructor for objects of class Car
      */
-    public Car() { }
+    public Car() {
+    }
 
     public Location getLocation() {
         return location;
@@ -31,7 +33,7 @@ public abstract class Car {
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
-    
+
     public boolean getIsPaying() {
         return isPaying;
     }
@@ -48,9 +50,17 @@ public abstract class Car {
         this.hasToPay = hasToPay;
     }
 
+    public boolean isDubelParkeren() {
+        return dubelParkeren;
+    }
+
+    public void setDubelParkeren(boolean dubelParkeren) {
+        this.dubelParkeren = dubelParkeren;
+    }
+
     public void tick() {
         minutesLeft--;
     }
-    
+
     public abstract Color getColor();
 }

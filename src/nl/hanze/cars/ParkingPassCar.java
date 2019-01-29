@@ -3,7 +3,8 @@ package nl.hanze.cars;
 import java.util.Random;
 import java.awt.*;
 
-public class ParkingPassCar extends Car {
+public class
+ParkingPassCar extends Car {
 	private static final Color COLOR=Color.blue;
 	
     public ParkingPassCar() {

@@ -13,8 +13,17 @@ public class FloorModel {
     private Car[][] cars;
     ;
 
-    public void reset(){
+    public void reset() {
         this.initCarsArray(this.numberOfRows, this.numberOfPlaces);
+    }
+
+    public Car getNextCar() {
+        for (Car[] cars : this.cars) {
+            for (Car oneCar : cars) {
+                return oneCar;
+            }
+        }
+        return null;
     }
 
     public static int NUMBER_OF_MODELS = -1;
