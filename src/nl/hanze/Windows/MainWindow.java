@@ -49,10 +49,22 @@ public class MainWindow extends JFrame {
         Main.label4 = new JLabel("Totaal spots reservered: " + floorController.getNumberOfOpenSpots());
         informationPanel.add(Main.label4);
 
+        Main.label5 = new JLabel("Mem lived: " + floorController.getNumberOfOpenSpots());
+        informationPanel.add(Main.label1);
+
+        Main.label6 = new JLabel("None lived: " + floorController.getNumberOfOpenSpots());
+        informationPanel.add(Main.label2);
+
+        Main.label7 = new JLabel("Reservations none: " + floorController.getNumberOfOpenSpots());
+        informationPanel.add(Main.label3);
+
         informationPanel.add(this.quene1);
         informationPanel.add(this.quene2);
         informationPanel.add(this.quene3);
         informationPanel.add(this.quene4);
+        informationPanel.add(Main.label5);
+        informationPanel.add(Main.label6);
+        informationPanel.add(Main.label7);
 
         informationPanel.setLayout(new FlowLayout());
 

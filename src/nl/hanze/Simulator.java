@@ -10,6 +10,7 @@ import nl.hanze.enums.FloorType;
 import nl.hanze.models.FloorModel;
 import nl.hanze.controllers.*;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,10 +41,10 @@ public class Simulator implements Runnable {
     private int tickPause = 100;
 
 
-    int weekDayArrivals = 100; // average number of arriving cars per hour was 100, 27%, piek + 67
-    int weekendArrivals = 200; // average number of arriving cars per hour was 200, 55%, piek + 137
-    int weekDayPassArrivals = 80; // average number of arriving cars per hour was 40, 10%, piek + 26
-    int weekendPassArrivals = 60; // average number of arriving cars per hour was 30, 8%, piek + 20
+    int weekDayArrivals = 150; // average number of arriving cars per hour was 100, 27%, piek + 67
+    int weekendArrivals = 300; // average number of arriving cars per hour was 200, 55%, piek + 137
+    int weekDayPassArrivals = 40; // average number of arriving cars per hour was 40, 10%, piek + 26
+    int weekendPassArrivals = 30; // average number of arriving cars per hour was 30, 8%, piek + 20
 
 
     //Variabellen die de winst van de parkeergarage bijhouden
@@ -288,6 +289,10 @@ public class Simulator implements Runnable {
         this.mainWindow.quene2.setText("Queue reservered:" + this.entranceReserveredQueue.carsInQueue());
         this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
 
+        Main.label5.setText("Mem lived: " + this.membersLevingQenue);
+        Main.label6.setText("None lived: " + this.noneLevingQenue);
+        Main.label7.setText("Reservations none: " + this.reserverdLevingQenue);
+
         this.mainWindow.quene4.setText("Cars laved : " + this.carsOutQenue);
 
 
@@ -412,18 +417,23 @@ public class Simulator implements Runnable {
             case FLOOR_TYPE_MENBER:
                 for (int i = 0; i < numberOfCars; i++) {
                     entranceCarQueue.addCar(new AdHocCar());
-                    this.addCarToQunue(entranceCarQueue, new AdHocCar());
+                    if (!this.entrancePassQueue.addCar(new AdHocCar())) {
+                        this.membersLevingQenue++;
+                    }
                 }
                 break;
             case FLOOR_TYPE_NONE:
-                numberOfCars += 100;
                 for (int i = 0; i < numberOfCars; i++) {
-                    this.addCarToQunue(entranceCarQueue, new ParkingPassCar());
+                    if (!this.entranceCarQueue.addCar(new ParkingPassCar())) {
+                        this.noneLevingQenue++;
+                    }
                 }
                 break;
             case FLOOR_TYPE_RESAVERED:
                 for (int i = 0; i < numberOfCars; i++) {
-                    this.addCarToQunue(entranceCarQueue, new ParkingReserveredCar());
+                    if (!this.entranceReserveredQueue.addCar(new ParkingReserveredCar())) {
+                        this.reserverdLevingQenue++;
+                    }
                 }
                 break;
         }
@@ -443,12 +453,6 @@ public class Simulator implements Runnable {
         }
 
         exitCarQueue.addCar(car);
-    }
-
-    private void addCarToQunue(CarQueue queue, Car car) {
-        if (!queue.addCar(car)) {
-            this.carsOutQenue++;
-        }
     }
 
 }

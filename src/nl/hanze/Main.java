@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static JLabel label1, label2, label3, label4;
+    public static JLabel label1, label2, label3, label4, label5, label6, label7;
     public static MainWindow mainWindow;
 
     public static void main(String[] args) {
