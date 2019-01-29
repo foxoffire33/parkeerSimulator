@@ -47,17 +47,17 @@ public class Simulator implements Runnable {
     int exitSpeed = 5; // number of cars that can leave per minute
     int carsOutQenue = 0;
 
-    double priceMember = 30;
-    double PriveNone = 1;
+    static double priceMember = 30;
+    static double PriceNone = 1;
     //variable maken
-    double PriceReservation = 0;
+    static double PriceReservation = 90;
 
     //running
     public static boolean isRunning = true;
 
 
     public double getLoss() {
-        return this.carsOutQenue * this.PriveNone;
+        return this.carsOutQenue * this.PriceNone;
     }
 
 
