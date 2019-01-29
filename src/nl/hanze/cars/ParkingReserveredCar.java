@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.Random;
 
 public class ParkingReserveredCar extends Car {
+    public static double price = 90;
     private static final Color COLOR = Color.YELLOW;
 
     public ParkingReserveredCar() {

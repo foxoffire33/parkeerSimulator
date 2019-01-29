@@ -13,7 +13,7 @@ public class MainWindow extends JFrame {
     public JLabel quene1 = new JLabel();
     public JLabel quene2 = new JLabel();
     public JLabel quene3 = new JLabel();
-    public JLabel quene4 = new JLabel("Totaal laved");
+    public JLabel quene4 = new JLabel("Totaal leaved");
 
     public static int membersRows = 2;
     public static int noneRows = 6;
@@ -83,6 +83,7 @@ public class MainWindow extends JFrame {
         Simulator simulator = new Simulator(MainWindow.getFloorController(), frame);
         return simulator;
     }
+
 
     public static FloorController getFloorController() {
         //Maak een controller
