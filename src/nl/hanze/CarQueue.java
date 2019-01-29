@@ -39,7 +39,6 @@ public class CarQueue {
             } else {
                 count++;
             }
-
         }
 
         this.queue = new LinkedList<>();

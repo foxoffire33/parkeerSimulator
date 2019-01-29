@@ -269,7 +269,12 @@ public class Simulator implements Runnable {
         queueCheck(entranceCarQueue);
         queueCheck(entranceReserveredQueue);
 
-        this.membersLevingQenue += entrancePassQueue.removedCars();
+        int memberRemovedFromQune = entrancePassQueue.removedCars();
+        this.membersLevingQenue += memberRemovedFromQune;
+
+        int redom = new Random().nextInt((50 - 1) + 1) + 1;
+        int memberLeving = (int) (memberRemovedFromQune / 100 * redom);
+
         this.noneLevingQenue += entranceCarQueue.removedCars();
         this.reserverdLevingQenue = entranceReserveredQueue.removedCars();
     }
