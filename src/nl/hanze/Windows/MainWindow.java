@@ -84,8 +84,8 @@ public class MainWindow extends JFrame {
         //Maak een controller
         floorController = new FloorController();
         //Maak models per floor aan en zet deze in de ArrayList in de controller
-        floorController.addModel(FloorType.FLOOR_TYPE_MENBER, 4);
-        floorController.addModel(FloorType.FLOOR_TYPE_NONE, 8);
+        floorController.addModel(FloorType.FLOOR_TYPE_MENBER, 1);
+        floorController.addModel(FloorType.FLOOR_TYPE_NONE, 4);
         floorController.addModel(FloorType.FLOOR_TYPE_RESAVERED, 2);
         return floorController;
     }
