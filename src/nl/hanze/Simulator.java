@@ -46,6 +46,7 @@ public class Simulator implements Runnable {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
     int carsOutQenue = 0;
+    int dubbelParkeren = 0;
 
     static double priceMember = 30;
     static double PriceNone = 1;
@@ -293,6 +294,7 @@ public class Simulator implements Runnable {
                     Car clone = new AdHocCar();
                     clone.setDubelParkeren(true);
                     model.setCarAt(freeLocation, clone);
+                    this.dubbelParkeren++;
                 }
 
 
@@ -383,6 +385,7 @@ public class Simulator implements Runnable {
             Car car2 = model.getNextCar();
             if (car2 != null) {
                 model.removeCarAt(car2.getLocation());
+                this.dubbelParkeren--;
             }
         }
 
