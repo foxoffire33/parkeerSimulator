@@ -31,16 +31,32 @@ public class Simulator implements Runnable {
     private CarQueue exitCarQueue;
     private FloorController floorController;
 
+
+    private int timescale = 1;
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
 
     private int tickPause = 100;
 
-    int weekDayArrivals = 100; // average number of arriving cars per hour
-    int weekendArrivals = 200; // average number of arriving cars per hour
-    int weekDayPassArrivals = 40; // average number of arriving cars per hour
-    int weekendPassArrivals = 30; // average number of arriving cars per hour
+
+    int weekDayArrivals = 100; // average number of arriving cars per hour was 100, 27%, piek + 67
+    int weekendArrivals = 200; // average number of arriving cars per hour was 200, 55%, piek + 137
+    int weekDayPassArrivals = 40; // average number of arriving cars per hour was 40, 10%, piek + 26
+    int weekendPassArrivals = 30; // average number of arriving cars per hour was 30, 8%, piek + 20
+
+
+    //Variabellen die de winst van de parkeergarage bijhouden
+    double membersWinst = 0;
+    double overigeWinst = 0;
+    double reserverdWinst = 0;
+
+
+    //deze variabelen staan los van de input variabellen hierboven en worden gebruikt om het origineel te behouden
+    int orWeekdayArrival = weekDayArrivals;
+    int orWeekendArrivals = weekendArrivals;
+    int orWeekdayPassArrivals = weekDayPassArrivals;
+    int orWeekendPassArrivals = weekendPassArrivals;
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -85,7 +101,7 @@ public class Simulator implements Runnable {
     }
 
 
-    //todo voorbei rijden
+    //todo voorbij rijden
     private void queueCheck(CarQueue queue) {
         if (queue.carsInQueue() > 10) {
             int rendomNumber = getRandomNumberInRange(3, 7);
@@ -105,16 +121,8 @@ public class Simulator implements Runnable {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    private void extraGuests() {
-        if (this.day >= 4 && this.hour == 18) {
-            //cars toevoegen
-        }
-        if (this.day == 3 && this.hour == 18) {
-            //500 extra autos
-        }
-    }
 
-    public void getReswervered() {
+    public void getReserved() {
         if (this.minute == 1) {
             MysqlConnection mysql = new MysqlConnection();
             if (mysql.isDbConnected()) {
@@ -169,7 +177,7 @@ public class Simulator implements Runnable {
     private void tick() {
         advanceTime();
         handleExit();
-        getReswervered();
+        getReserved();
         updateViews();
         // Pause.
         try {
@@ -180,9 +188,69 @@ public class Simulator implements Runnable {
         handleEntrance();
     }
 
+    //functie om de drukte van de parkeergarage aan te passen aan de tijd.
+    private void checkTime() {
+
+
+        if (day == 5 || day == 4 || day == 3) {
+
+            switch (this.hour) {
+
+                case 17:
+                    for (int i = 0; i < 68; i++) {
+                        AdHocCar car = new AdHocCar();
+                        entranceCarQueue.addCar(car);
+
+                    }
+
+                    for (int i = 0; i < 138; i++) {
+                        ParkingPassCar car = new ParkingPassCar();
+                        entrancePassQueue.addCar(car);
+                    }
+
+
+                case 23:
+                    weekDayArrivals = orWeekdayPassArrivals;
+                    weekendArrivals = orWeekendArrivals;
+                    weekDayPassArrivals = orWeekdayPassArrivals;
+                    weekendPassArrivals = orWeekendPassArrivals;
+
+            }
+        }
+
+        if (day == 6) {
+            switch (this.hour) {
+
+                case 12:
+                    for (int i = 0; i < 68; i++) {
+                        AdHocCar csr = new AdHocCar();
+                        entranceCarQueue.addCar(csr);
+
+                    }
+
+                    for (int i = 0; i < 138; i++) {
+                        ParkingPassCar car = new ParkingPassCar();
+                        entrancePassQueue.addCar(car);
+                    }
+
+                case 17:
+                    weekDayArrivals = orWeekdayPassArrivals;
+                    weekendArrivals = orWeekendArrivals;
+                    weekDayPassArrivals = orWeekdayPassArrivals;
+                    weekendPassArrivals = orWeekendPassArrivals;
+
+            }
+
+
+        }
+
+
+    }
+
     private void advanceTime() {
         // Advance the time by one minute.
-        minute++;
+        minute += timescale;
+        checkTime();
         while (minute > 59) {
             minute -= 60;
             hour++;
@@ -195,6 +263,14 @@ public class Simulator implements Runnable {
             day -= 7;
         }
 
+    }
+
+    private void increaseSpeed() {
+        timescale *= 2;
+    }
+
+    public void decreaseSpeed() {
+        timescale /= 2;
     }
 
     private void handleEntrance() {
@@ -240,10 +316,10 @@ public class Simulator implements Runnable {
     }
 
     private void carsArriving() {
-        int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
+        int numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_MENBER);
 
-        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_NONE);
 
         //  numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
@@ -318,7 +394,9 @@ public class Simulator implements Runnable {
         int i = 0;
         while (paymentCarQueue.carsInQueue() > 0 && i < paymentSpeed) {
             Car car = paymentCarQueue.removeCar();
-            // TODO Handle payment.
+
+
+
             carLeavesSpot(car);
             i++;
         }
