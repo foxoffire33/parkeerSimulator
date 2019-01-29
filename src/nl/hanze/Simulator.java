@@ -105,16 +105,6 @@ public class Simulator implements Runnable {
     }
 
 
-    //todo voorbij rijden
-    private void queueCheck(CarQueue queue) {
-//        if (queue.carsInQueue() > 10) {
-//            int rendomNumber = getRandomNumberInRange(3, 7);
-//            for (int i = 0; i < rendomNumber; i++) {
-//                this.carsOutQenue++;
-//            }
-//        }
-    }
-
     private static int getRandomNumberInRange(int min, int max) {
 
         if (min >= max) {
@@ -265,9 +255,6 @@ public class Simulator implements Runnable {
         carsEntering(entrancePassQueue);
         carsEntering(entranceCarQueue);
         carsEntering(entranceReserveredQueue);
-        queueCheck(entrancePassQueue);
-        queueCheck(entranceCarQueue);
-        queueCheck(entranceReserveredQueue);
 
         int memberRemovedFromQune = entrancePassQueue.removedCars();
         this.membersLevingQenue += memberRemovedFromQune;
@@ -277,6 +264,7 @@ public class Simulator implements Runnable {
 
         this.noneLevingQenue += entranceCarQueue.removedCars();
         this.reserverdLevingQenue = entranceReserveredQueue.removedCars();
+
     }
 
     private void handleExit() {
@@ -315,7 +303,7 @@ public class Simulator implements Runnable {
         int numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_MENBER);
 
-        numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
+        numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals) + 50;
         addArrivingCars(numberOfCars, FloorType.FLOOR_TYPE_NONE);
 
         //  numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
@@ -361,7 +349,7 @@ public class Simulator implements Runnable {
 
 
             }
-
+            //todo jari dit fixen
             if (openMembers > 0 && openSpots <= 0 && car instanceof AdHocCar) {
                 Location freeLocation = extraMember.getFirstFreeLocation();
                 extraMember.setCarAt(freeLocation, car);
@@ -458,7 +446,9 @@ public class Simulator implements Runnable {
 
     private void addCarToQunue(CarQueue queue, Car car) {
         if (!queue.isFull()) {
-            queue.addCar(car);
+            if (!queue.addCar(car)) {
+                this.carsOutQenue++;
+            }
         }
     }
 

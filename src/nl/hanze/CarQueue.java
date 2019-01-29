@@ -12,6 +12,7 @@ public class CarQueue {
         if (this.maxCars > this.carsInQueue()) {
             return queue.add(car);
         }
+        System.out.println("Het is weer eens tien");
         return false;
     }
 
