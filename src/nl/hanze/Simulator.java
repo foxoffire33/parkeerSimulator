@@ -40,29 +40,33 @@ public class Simulator implements Runnable {
     private int tickPause = 100;
 
 
-    int weekDayArrivals = 50; // average number of arriving cars per hour was 100, 27%, piek + 67
-    int weekendArrivals = 100; // average number of arriving cars per hour was 200, 55%, piek + 137
-    int weekDayPassArrivals = 40; // average number of arriving cars per hour was 40, 10%, piek + 26
-    int weekendPassArrivals = 30; // average number of arriving cars per hour was 30, 8%, piek + 20
+    int weekDayArrivals = 100; // average number of arriving cars per hour was 100, 27%, piek + 67
+    int weekendArrivals = 200; // average number of arriving cars per hour was 200, 55%, piek + 137
+    int weekDayPassArrivals = 80; // average number of arriving cars per hour was 40, 10%, piek + 26
+    int weekendPassArrivals = 60; // average number of arriving cars per hour was 30, 8%, piek + 20
 
 
     //Variabellen die de winst van de parkeergarage bijhouden
-    double membersWinst = 0;
-    double overigeWinst = 0;
-    double reserverdWinst = 0;
+    private double membersWinst = 0;
+    private double overigeWinst = 0;
+    private double reserverdWinst = 0;
+
+    private int membersLevingQenue = 0;
+    private int noneLevingQenue = 0;
+    private int reserverdLevingQenue = 0;
 
 
     //deze variabelen staan los van de input variabellen hierboven en worden gebruikt om het origineel te behouden
-    int orWeekdayArrival = weekDayArrivals;
-    int orWeekendArrivals = weekendArrivals;
-    int orWeekdayPassArrivals = weekDayPassArrivals;
-    int orWeekendPassArrivals = weekendPassArrivals;
+    private int orWeekdayArrival = weekDayArrivals;
+    private int orWeekendArrivals = weekendArrivals;
+    private int orWeekdayPassArrivals = weekDayPassArrivals;
+    private int orWeekendPassArrivals = weekendPassArrivals;
 
-    int enterSpeed = 3; // number of cars that can enter per minute
-    int paymentSpeed = 7; // number of cars that can pay per minute
-    int exitSpeed = 5; // number of cars that can leave per minute
-    int carsOutQenue = 0;
-    int dubbelParkeren = 0;
+    private int enterSpeed = 3; // number of cars that can enter per minute
+    private int paymentSpeed = 7; // number of cars that can pay per minute
+    private int exitSpeed = 5; // number of cars that can leave per minute
+    private int carsOutQenue = 0;
+    private int dubbelParkeren = 0;
 
     //running
     public static boolean isRunning = true;
@@ -103,12 +107,12 @@ public class Simulator implements Runnable {
 
     //todo voorbij rijden
     private void queueCheck(CarQueue queue) {
-        if (queue.carsInQueue() > 10) {
-            int rendomNumber = getRandomNumberInRange(3, 7);
-            for (int i = 0; i < rendomNumber; i++) {
-                this.carsOutQenue++;
-            }
-        }
+//        if (queue.carsInQueue() > 10) {
+//            int rendomNumber = getRandomNumberInRange(3, 7);
+//            for (int i = 0; i < rendomNumber; i++) {
+//                this.carsOutQenue++;
+//            }
+//        }
     }
 
     private static int getRandomNumberInRange(int min, int max) {
@@ -265,9 +269,9 @@ public class Simulator implements Runnable {
         queueCheck(entranceCarQueue);
         queueCheck(entranceReserveredQueue);
 
-        entrancePassQueue.removeCars();
-        entranceCarQueue.removeCars();
-        entranceReserveredQueue.removeCars();
+        this.membersLevingQenue += entrancePassQueue.removedCars();
+        this.noneLevingQenue += entranceCarQueue.removedCars();
+        this.reserverdLevingQenue = entranceReserveredQueue.removedCars();
     }
 
     private void handleExit() {

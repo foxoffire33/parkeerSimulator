@@ -2,10 +2,7 @@ package nl.hanze;
 
 import nl.hanze.cars.Car;
 
-import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class CarQueue {
     private Queue<Car> queue = new LinkedList<>();
@@ -30,23 +27,25 @@ public class CarQueue {
         return this.maxCars == this.carsInQueue();
     }
 
-    public void removeCars() {
+    public int removedCars() {
         Iterator<Car> carsIT = this.queue.iterator();
-
-        LinkedList<Car> queue = new LinkedList<>();
+        int count = 0;
 
         while (carsIT.hasNext()) {
             Car car = carsIT.next();
             car.incurrmentQenueTime();
             if (car.hasToLaveQenue()) {
-                this.removeCar();
+                carsIT.remove();
+            } else {
+                count++;
             }
-            {
-                this.queue.add(car);
-            }
-        }
-        this.queue = queue;
 
+        }
+
+        this.queue = new LinkedList<>();
+        carsIT.forEachRemaining(((LinkedList<Car>) this.queue)::add);
+
+        return count;
     }
 
     public Car getFirstCar() {
