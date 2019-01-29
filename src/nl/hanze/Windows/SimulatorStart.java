@@ -1,48 +1,100 @@
 package nl.hanze.Windows;
 
 
+import nl.hanze.Simulator;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class SimulatorStart extends JFrame {
 
-    public SimulatorStart(){
-        super();
-        this.setBounds(100,100,739,489);
+    JTextField textField, textField2, textField3, textField4, textField5, textField6;
 
-        JTextField textField = new JTextField();
-        textField.setBounds(180, 28, 25, 20);
+    public SimulatorStart() {
+        super();
+        this.setBounds(100, 100, 739, 489);
+
+        textField = new JTextField();
+        textField.setBounds(300, 31, 25, 20);
         this.getContentPane().add(textField);
         textField.setColumns(10);
 
-        JLabel lblName = new JLabel("weekDayArrivals");
+        JLabel lblName = new JLabel("Abolament houders rijen");
         lblName.setBounds(65, 31, 600, 14);
         this.getContentPane().add(lblName);
 
-        JTextField textField2 = new JTextField();
-        textField2.setBounds(180, 58, 25, 20);
+        textField2 = new JTextField();
+        textField2.setBounds(300, 51, 25, 20);
         this.getContentPane().add(textField2);
         textField2.setColumns(10);
 
-        JLabel lblName2 = new JLabel("weekendArrivals");
-        lblName2.setBounds(65, 61, 600, 14);
+        JLabel lblName2 = new JLabel("Online reservartions rijen");
+        lblName2.setBounds(65, 51, 600, 14);
         this.getContentPane().add(lblName2);
 
-        JButton startSimulatie = new JButton("Strt simulatie");
-        startSimulatie.addActionListener((e) -> {
-            this.removeAll();
-            //new MainWindow();
-        });
-        startSimulatie.setBounds(65, 61, 600, 14);
-        this.add(startSimulatie);
 
+        this.textField4 = new JTextField();
+        this.textField4.setBounds(300, 71, 25, 20);
+        this.getContentPane().add(this.textField4);
+        this.textField4.setColumns(10);
+
+        JLabel label4 = new JLabel("Members price");
+        label4.setBounds(65, 71, 600, 14);
+        this.add(label4);
+
+        textField5 = new JTextField();
+        textField5.setBounds(300, 91, 25, 20);
+        this.getContentPane().add(textField5);
+        textField5.setColumns(10);
+
+        JLabel lblName5 = new JLabel("None Price");
+        lblName5.setBounds(65, 91, 600, 14);
+        this.getContentPane().add(lblName5);
+
+
+        this.textField6 = new JTextField();
+        this.textField6.setBounds(300, 111, 25, 20);
+        this.getContentPane().add(this.textField6);
+        this.textField6.setColumns(10);
+
+        JLabel label6 = new JLabel("Reservatings price");
+        label6.setBounds(65, 111, 600, 14);
+        this.add(label6);
+
+
+        JButton submit = new JButton("Start simulatie");
+        submit.setBounds(65, 131, 260, 20);
+        submit.addActionListener((e) -> changeSettings());
+        this.getContentPane().add(submit);
+        // submit.setColumns(10);
+
+
+        this.setSize(new Dimension(400, 300));
+        this.setTitle("Change settings");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(null);
-        this.pack();
+
+        //   this.pack();
         this.setVisible(true);
     }
 
+    private void changeSettings() {
+        try {
+            MainWindow.membersRows = Integer.parseInt(this.textField2.getText());
+            MainWindow.noneRows = Integer.parseInt(this.textField.getText());
+            MainWindow.reservationRows = Integer.parseInt(this.textField3.getText());
+
+            Simulator.priceMember = Double.parseDouble(this.textField4.getText().replace(',', '.'));
+            Simulator.PriceNone = Double.parseDouble(this.textField.getText().replace(',', '.'));
+            Simulator.PriceReservation = Double.parseDouble(this.textField3.getText().replace(',', '.'));
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "U kunt alleen Ints in vullen");
+        }
+
+        Simulator.isRunning = false;
+    }
 
 
 }

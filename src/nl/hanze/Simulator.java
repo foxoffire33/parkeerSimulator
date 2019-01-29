@@ -48,10 +48,9 @@ public class Simulator implements Runnable {
     int carsOutQenue = 0;
     int dubbelParkeren = 0;
 
-    static double priceMember = 30;
-    static double PriceNone = 1;
-    //variable maken
-    static double PriceReservation = 90;
+    public static double priceMember = 30;
+    public static double PriceNone = 1;
+    public static double PriceReservation = 90;
 
     //running
     public static boolean isRunning = true;

@@ -15,6 +15,10 @@ public class MainWindow extends JFrame {
     public JLabel quene3 = new JLabel();
     public JLabel quene4 = new JLabel("Totaal laved");
 
+    public static int membersRows = 2;
+    public static int noneRows = 6;
+    public static int reservationRows = 4;
+
     public StatusBar statusBar;
     private static FloorController floorController;
 
@@ -84,9 +88,9 @@ public class MainWindow extends JFrame {
         //Maak een controller
         floorController = new FloorController();
         //Maak models per floor aan en zet deze in de ArrayList in de controller
-        floorController.addModel(FloorType.FLOOR_TYPE_MENBER, 1);
-        floorController.addModel(FloorType.FLOOR_TYPE_NONE, 4);
-        floorController.addModel(FloorType.FLOOR_TYPE_RESAVERED, 2);
+        floorController.addModel(FloorType.FLOOR_TYPE_MENBER, MainWindow.membersRows);
+        floorController.addModel(FloorType.FLOOR_TYPE_NONE, MainWindow.noneRows);
+        floorController.addModel(FloorType.FLOOR_TYPE_RESAVERED, MainWindow.reservationRows);
         return floorController;
     }
 
