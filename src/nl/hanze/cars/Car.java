@@ -11,6 +11,8 @@ public abstract class Car {
     private boolean isPaying;
     private boolean hasToPay;
     private boolean dubelParkeren;
+    private int qneueTime = 20;
+    private int countQuneTime = 1;
 
     /**
      * Constructor for objects of class Car
@@ -63,4 +65,16 @@ public abstract class Car {
     }
 
     public abstract Color getColor();
+
+    public int getQneueTime() {
+        return qneueTime;
+    }
+
+    public void incurrmentQenueTime() {
+        this.countQuneTime++;
+    }
+
+    public boolean hasToLaveQenue(){
+        return this.qneueTime == this.countQuneTime;
+    }
 }

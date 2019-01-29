@@ -265,9 +265,9 @@ public class Simulator implements Runnable {
         queueCheck(entranceCarQueue);
         queueCheck(entranceReserveredQueue);
 
-        entranceCarQueue.tick();
-        entrancePassQueue.tick();
-        entranceReserveredQueue.tick();
+        entrancePassQueue.removeCars();
+        entranceCarQueue.removeCars();
+        entranceReserveredQueue.removeCars();
     }
 
     private void handleExit() {
