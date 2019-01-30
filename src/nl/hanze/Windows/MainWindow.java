@@ -26,14 +26,22 @@ public class MainWindow extends JFrame {
         this.setJMenuBar(new MyMenuBar());
 
         Container container = this.getContentPane();
+        container = new Container();
 
         floorController = getFloorController();
 
-        JPanel panel = new JPanel();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_MENBER));
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_NONE));
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_RESAVERED));
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+
+        BoxLayout boxLayout = new BoxLayout(panel, BoxLayout.X_AXIS);
+        panel.setLayout(boxLayout);
+        JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_MENBER),BorderLayout.WEST);
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_NONE),BorderLayout.CENTER);
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_RESAVERED),BorderLayout.EAST);
 
 
         JPanel informationPanel = new JPanel();
@@ -58,7 +66,7 @@ public class MainWindow extends JFrame {
         Main.label7 = new JLabel("Reservations none: " + floorController.getNumberOfOpenSpots());
         informationPanel.add(Main.label3);
 
-        Main.label8  = new JLabel();
+        Main.label8 = new JLabel();
 
         informationPanel.add(this.quene1);
         informationPanel.add(this.quene2);
@@ -68,24 +76,20 @@ public class MainWindow extends JFrame {
         informationPanel.add(Main.label6);
         informationPanel.add(Main.label7);
 
-        informationPanel.setLayout(new FlowLayout());
-
         panel.add(informationPanel);
 
-        //views toevoegen aan MainWindow
+        setLocationRelativeTo(null);
+        scrollPane.getViewport().addChangeListener((e) -> { this.repaint(); } );
 
-        GridLayout experimentLayout = new GridLayout(0, 4);
-        panel.setLayout(experimentLayout);
-
-
-        this.setMinimumSize(new Dimension(1200, 500));
-
-        this.add(panel, BorderLayout.CENTER);
+        this.add(scrollPane);
 
         this.statusBar = new StatusBar();
         this.getContentPane().add(this.statusBar, java.awt.BorderLayout.SOUTH);
 
-        this.pack();
+        this.setSize(400,300);
+
+        scrollPane.setSize(400,300);
+
         this.setVisible(true);
 
         Simulator simulator = new Simulator(floorController, this);

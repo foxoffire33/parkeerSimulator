@@ -27,7 +27,7 @@ public class SimulatorStart extends JFrame {
         textField.setColumns(10);
 
         JLabel lblName2 = new JLabel("Regulere gebruikers rijen");
-        lblName.setBounds(65, 51, 600, 14);
+        lblName2.setBounds(65, 51, 600, 14);
         this.getContentPane().add(lblName2);
 
         textField2 = new JTextField();
@@ -78,13 +78,11 @@ public class SimulatorStart extends JFrame {
         submit.setBounds(65, 151, 260, 20);
         submit.addActionListener((e) -> changeSettings());
         this.getContentPane().add(submit);
-        // submit.setColumns(10);
 
 
         this.setSize(new Dimension(400, 300));
         this.setTitle("Change settings");
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(null);
 
         //   this.pack();
@@ -102,7 +100,7 @@ public class SimulatorStart extends JFrame {
             ParkingReserveredCar.setPrice(Double.parseDouble(this.textField3.getText().replace(',', '.')));
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "U kunt alleen Ints in vullen");
+            JOptionPane.showMessageDialog(this, "Het formulier is niet correct ingevuld!!", "Error" , 0);
             return;
         }
 
