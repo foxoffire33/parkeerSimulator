@@ -1,6 +1,9 @@
 package nl.hanze;
 
+import nl.hanze.cars.AdHocCar;
 import nl.hanze.cars.Car;
+import nl.hanze.cars.ParkingPassCar;
+import nl.hanze.cars.ParkingReserveredCar;
 
 import java.util.*;
 
@@ -13,6 +16,9 @@ public class CarQueue {
             return queue.add(car);
         }
         System.out.println("Het is weer eens tien");
+       if (car instanceof AdHocCar){Simulator.verlorenqueuewinstMembers += AdHocCar.getPrice();}
+       if (car instanceof ParkingPassCar){Simulator.verlorenqueuewinstOverig += ParkingPassCar.getPrice();}
+       if (car instanceof ParkingReserveredCar){Simulator.verlorenqueuewinstReserved += ParkingReserveredCar.getPrice();}
        return false;
     }
 
