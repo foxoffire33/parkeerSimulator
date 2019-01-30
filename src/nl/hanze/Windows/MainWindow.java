@@ -40,7 +40,7 @@ public class MainWindow extends JFrame {
 
         BoxLayout boxLayout = new BoxLayout(panel, BoxLayout.X_AXIS);
         panel.setLayout(boxLayout);
-        JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         panel.add(floorController.getView(FloorType.FLOOR_TYPE_MENBER), BorderLayout.WEST);
         panel.add(floorController.getView(FloorType.FLOOR_TYPE_NONE), BorderLayout.CENTER);
