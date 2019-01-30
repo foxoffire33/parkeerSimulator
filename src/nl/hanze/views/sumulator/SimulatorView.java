@@ -24,7 +24,7 @@ public class SimulatorView extends JFrame {
         this.numberOfOpenSpots =numberOfFloors*numberOfRows*numberOfPlaces;
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
 
-        this.setPreferredSize(new Dimension(100,100));
+      //  this.setPreferredSize(new Dimension(100,100));
 
         Container contentPane = getContentPane();
         contentPane.add(carParkView);
