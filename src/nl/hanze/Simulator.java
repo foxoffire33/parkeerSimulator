@@ -176,6 +176,14 @@ public class Simulator implements Runnable {
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
 
+        this.verlorenqueuewinstOverig = 0;
+        this.verlorenqueuewinstMembers = 0;
+        this.verlorenqueuewinstReserved = 0 ;
+        this.verlorenqueuewinsttotaal = 0;
+        this.verlorenwinstdubbel = 0;
+        this.verlorenwinsttotaal = 0 ;
+
+
         this.hour = 0;
         this.minute = 0;
         this.day = 0;

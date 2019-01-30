@@ -62,8 +62,8 @@ public class MainWindow extends JFrame {
         p.add(informationPanel);
         this.add(p);
 
-        setSize(800, 600);
-        setMinimumSize(new Dimension(500, 500));
+        setSize(800, 700);
+        setMinimumSize(new Dimension(500, 700));
 
         this.statusBar = new StatusBar();
         this.getContentPane().add(this.statusBar, java.awt.BorderLayout.SOUTH);
