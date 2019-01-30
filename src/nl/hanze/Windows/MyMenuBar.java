@@ -25,7 +25,6 @@ public class MyMenuBar extends JMenuBar {
         JMenuItem startItem = new JMenuItem("Start Simulation");
         startItem.addActionListener((e) -> {
             new SimulatorStart();
-           // Main.simulatiethread = new Thread(new Simulator(MainWindow.getFloorController(),Main.mainWindow));
 
         });
         fileMenu.add(startItem);
