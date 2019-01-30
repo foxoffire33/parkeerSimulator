@@ -16,7 +16,7 @@ public class FloorViewIndex extends View {
 
     public FloorViewIndex(FloorModel model) {
         this.model = model;
-       this.setPreferredSize(new Dimension((50 * this.model.getNumberOfRows()),500));
+       this.setPreferredSize(new Dimension((60 * this.model.getNumberOfRows()),500));
 
     }
 
