@@ -1,5 +1,6 @@
 package nl.hanze;
 
+import nl.hanze.Windows.InformationPanel;
 import nl.hanze.Windows.MainWindow;
 import nl.hanze.cars.AdHocCar;
 import nl.hanze.cars.Car;
@@ -79,13 +80,13 @@ public class Simulator implements Runnable {
 
     private int enterSpeed = 3; // number of cars that can enter per minute
     private int paymentSpeed = 7; // number of cars that can pay per minute
-    private int carsOutQenue = 0;
     private int exitSpeed = 5;
 
     private int dubbelParkOverige = 0; //houd het huidige aantal dubbelparkeerders van overige mensen bij
     private int dubbelParkMember = 0; //houd het huidge aantal dubbelpaarders bij van members
     private int dubbelParkReserved = 0; //houd het huidig aantal dubbelpaarkeerders bij van reserved;
     private int dubbelParkTotaal = 0; //houd het huidig aantal dubbelparkeerders bij
+    private int dubbelParkAll = 0; //Iedereen die ooit heeft dubbelgeparkeerd sinds simulatie starte
 
     //running
     public static boolean isRunning = true;
@@ -324,6 +325,7 @@ public class Simulator implements Runnable {
 
         int memberRemovedFromQune = entrancePassQueue.removedCars();
         this.membersLevingQenue += memberRemovedFromQune;
+        verlorenqueuewinstMembers = memberRemovedFromQune * AdHocCar.getPrice();
 
         int redom = new Random().nextInt((50 - 1) + 1) + 1;
         int memberLeving = (int) (memberRemovedFromQune / 100 * redom);
@@ -358,6 +360,60 @@ public class Simulator implements Runnable {
 //        this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
 //
 //        this.mainWindow.quene4.setText("Cars left: " + this.carsOutQenue);
+
+        int totalSpots = floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).returntotal() ;
+        totalSpots += floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).returntotal();
+        totalSpots += floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).returntotal();
+
+        verlorenqueuewinstOverig += (noneLevingQenue * ParkingPassCar.getPrice());
+        verlorenqueuewinstMembers += (membersLevingQenue * AdHocCar.getPrice());
+        verlorenqueuewinstReserved += (reserverdLevingQenue * ParkingReserveredCar.getPrice());
+
+        InformationPanel.title4.setText("FREE SPOTS");
+        InformationPanel.spots1.setText("Total free spots " + floorController.getNumberOfOpenSpots() + "/" + totalSpots);
+        InformationPanel.spots2.setText("Member " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
+        InformationPanel.spots3.setText("Generic " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
+        InformationPanel.spots4.setText("Reserved " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        InformationPanel.space1.setText(" ");
+        InformationPanel.title5.setText("QUEUE LEAVING");
+        InformationPanel.queue1.setText("Queueleaving regulars: " + noneLevingQenue);
+        InformationPanel.queue2.setText("Queueleaving members: " + membersLevingQenue);
+        InformationPanel.queue3.setText("Queueleaving reserveers: " + reserverdLevingQenue);
+        //space 2
+        InformationPanel.title6.setText("PROFIT");
+        InformationPanel.profitg.setText("Profit regulars: €" + overigeWinst);
+        InformationPanel.profitm.setText("Profit members: €" + membersWinst);
+        InformationPanel.profitr.setText("Profit reserveers: €" + reserverdWinst);
+        InformationPanel.profitT.setText("Total profit: €" + totaleWinst);
+        //space3
+        InformationPanel.title7.setText("DOUBLE PARKING");
+        InformationPanel.dubble1.setText("D-parked total: " + dubbelParkTotaal);
+        InformationPanel.dubble2.setText("D-parked members: " + dubbelParkMember);
+        InformationPanel.dubble3.setText("D-Parked regulars: " + dubbelParkOverige);
+        InformationPanel.dubble4.setText("D-Parked reserveers: " + dubbelParkReserved);
+        InformationPanel.dubble4.setText("D-Parked since start: " + dubbelParkAll);
+        //space 4
+        InformationPanel.title1.setText("PROFIT LOSS Q-LEAVING");
+        InformationPanel.loss1.setText("Loss regulars: €" + verlorenqueuewinstOverig + "-");
+        InformationPanel.loss2.setText("Loss members: €" + verlorenqueuewinstMembers+"-");
+        InformationPanel.loss3.setText("Loss reserveers: €" + verlorenqueuewinstReserved+"-");
+        InformationPanel.loss4.setText("Total queue Loss: €" + verlorenqueuewinsttotaal + "-");
+
+        InformationPanel.space5.setText(" ");
+
+        InformationPanel.title2.setText("PROFIT LOSS D-PARKING");
+        InformationPanel.loss5.setText("                 €" + verlorenwinstdubbel + "-");
+
+        InformationPanel.space6.setText(" ");
+        InformationPanel.title3.setText("TOTAL PROFIT LOST");
+        InformationPanel.loss6.setText("             €" + verlorenwinsttotaal + "-");
+
+
+
+
+
+
+
 
 
 
@@ -412,9 +468,9 @@ public class Simulator implements Runnable {
                 if (deubelParkeren == 1) {
                     freeLocation = model.getFirstFreeLocation();
                     Car clone = null;
-                  if (car instanceof AdHocCar){clone = new AdHocCar(); System.out.println("Een member heeft dubbelparkeerd."); membersWinst -= AdHocCar.getPrice(); totaleWinst -= AdHocCar.getPrice(); dubbelParkMember ++; verlorenwinstdubbel += AdHocCar.getPrice();}
-                  if (car instanceof ParkingPassCar){clone = new ParkingPassCar();System.out.println("Een overige parkeerder heeft dubbelparkeerd."); overigeWinst -= ParkingPassCar.getPrice(); totaleWinst -= ParkingPassCar.getPrice(); dubbelParkOverige ++; verlorenwinstdubbel += ParkingPassCar.getPrice();}
-                  if (car instanceof ParkingReserveredCar){clone = new ParkingReserveredCar();System.out.println("Een reserveerder heeft dubbelparkeerd."); reserverdWinst -= ParkingReserveredCar.getPrice();totaleWinst -= ParkingReserveredCar.getPrice();dubbelParkReserved ++; verlorenwinstdubbel += ParkingReserveredCar.getPrice(); }
+                  if (car instanceof AdHocCar){clone = new AdHocCar();dubbelParkAll ++; System.out.println("Een member heeft dubbelgeparkeerd."); membersWinst -= AdHocCar.getPrice(); totaleWinst -= AdHocCar.getPrice(); dubbelParkMember ++; verlorenwinstdubbel += AdHocCar.getPrice();}
+                  if (car instanceof ParkingPassCar){clone = new ParkingPassCar();dubbelParkAll ++; System.out.println("Een overige parkeerder heeft dubbelgeparkeerd."); overigeWinst -= ParkingPassCar.getPrice(); totaleWinst -= ParkingPassCar.getPrice(); dubbelParkOverige ++; verlorenwinstdubbel += ParkingPassCar.getPrice();}
+                  if (car instanceof ParkingReserveredCar){clone = new ParkingReserveredCar();dubbelParkAll ++; System.out.println("Een reserveerder heeft dubbelgeparkeerd."); reserverdWinst -= ParkingReserveredCar.getPrice();totaleWinst -= ParkingReserveredCar.getPrice();dubbelParkReserved ++; verlorenwinstdubbel += ParkingReserveredCar.getPrice(); }
                     clone.setDubelParkeren(true);
                     model.setCarAt(freeLocation, clone);
                     this.dubbelParkTotaal++;
@@ -495,6 +551,7 @@ public class Simulator implements Runnable {
                     entranceCarQueue.addCar(new AdHocCar());
                     if (!this.entrancePassQueue.addCar(new AdHocCar())) {
                         this.membersLevingQenue++;
+                        this.verlorenqueuewinstMembers += AdHocCar.price;
                     }
                 }
                 break;
@@ -502,6 +559,7 @@ public class Simulator implements Runnable {
                 for (int i = 0; i < numberOfCars; i++) {
                     if (!this.entranceCarQueue.addCar(new ParkingPassCar())) {
                         this.noneLevingQenue++;
+                        this.verlorenqueuewinstOverig += ParkingPassCar.price;
                     }
                 }
                 break;
@@ -509,6 +567,7 @@ public class Simulator implements Runnable {
                 for (int i = 0; i < numberOfCars; i++) {
                     if (!this.entranceReserveredQueue.addCar(new ParkingReserveredCar())) {
                         this.reserverdLevingQenue++;
+                        this.verlorenqueuewinstReserved += ParkingReserveredCar.price;
                     }
                 }
                 break;

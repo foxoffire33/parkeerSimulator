@@ -17,7 +17,7 @@ public class SimulatorStart extends JFrame {
         super();
         this.setBounds(100, 100, 739, 489);
 
-        JLabel lblName = new JLabel("Abolament houders rijen");
+        JLabel lblName = new JLabel("Member rows");
         lblName.setBounds(65, 31, 600, 14);
         this.getContentPane().add(lblName);
 
@@ -26,7 +26,7 @@ public class SimulatorStart extends JFrame {
         this.getContentPane().add(textField);
         textField.setColumns(10);
 
-        JLabel lblName2 = new JLabel("Regulere gebruikers rijen");
+        JLabel lblName2 = new JLabel("Regular rows");
         lblName2.setBounds(65, 51, 600, 14);
         this.getContentPane().add(lblName2);
 
@@ -35,7 +35,7 @@ public class SimulatorStart extends JFrame {
         this.getContentPane().add(textField2);
         textField2.setColumns(10);
 
-        JLabel lblName3 = new JLabel("Online reservartions rijen");
+        JLabel lblName3 = new JLabel("Online reservation rows");
         lblName3.setBounds(65, 71, 600, 14);
         this.getContentPane().add(lblName3);
 
@@ -54,7 +54,7 @@ public class SimulatorStart extends JFrame {
         this.getContentPane().add(textField4);
         textField4.setColumns(10);
 
-        JLabel lblName5 = new JLabel("None Price");
+        JLabel lblName5 = new JLabel("Regular Price");
         lblName5.setBounds(65, 111, 600, 14);
         this.getContentPane().add(lblName5);
 
@@ -64,7 +64,7 @@ public class SimulatorStart extends JFrame {
         this.getContentPane().add(this.textField5);
         this.textField5.setColumns(10);
 
-        JLabel label6 = new JLabel("Reservatings price");
+        JLabel label6 = new JLabel("Reserveers price");
         label6.setBounds(65, 131, 600, 14);
         this.add(label6);
 
@@ -74,7 +74,7 @@ public class SimulatorStart extends JFrame {
         this.textField6.setColumns(10);
 
 
-        JButton submit = new JButton("Start simulatie");
+        JButton submit = new JButton("Start simulation");
         submit.setBounds(65, 151, 260, 20);
         submit.addActionListener((e) -> changeSettings());
         this.getContentPane().add(submit);
@@ -100,7 +100,7 @@ public class SimulatorStart extends JFrame {
             ParkingReserveredCar.setPrice(Double.parseDouble(this.textField3.getText().replace(',', '.')));
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Het formulier is niet correct ingevuld!!", "Error", 0);
+            JOptionPane.showMessageDialog(this, "The form hasn't been filled in correctly!", "Error" , 0);
             return;
         }
 

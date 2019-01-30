@@ -7,7 +7,7 @@ public class LagendaBar extends JPanel {
 
     public LagendaBar() {
         this.add(this.coloredPanel(Color.red, "Members"));
-        this.add(this.coloredPanel(Color.blue, "None members"));
+        this.add(this.coloredPanel(Color.blue, "Regulars"));
         this.add(this.coloredPanel(Color.yellow, "Reservered"));
 
         this.setSize(new Dimension(30, 30));

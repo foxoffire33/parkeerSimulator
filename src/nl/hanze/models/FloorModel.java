@@ -10,7 +10,7 @@ public class FloorModel extends Model {
     private FloorType type;
     private int numberOfRows = 4;
     private int numberOfPlaces = 30;
-    private int totalspots = numberOfPlaces * numberOfRows;
+    private int totalspots = this.numberOfPlaces * this.numberOfRows;
     private int numberOfOpenSpots;
     private Car[][] cars;
 
@@ -39,7 +39,7 @@ public class FloorModel extends Model {
         this.type = type;
         this.numberOfRows = rows;
         this.initCarsArray(this.numberOfRows, this.numberOfPlaces);
-    }
+}
 
     private void initCarsArray(int rows, int places) {
 
@@ -70,8 +70,10 @@ public class FloorModel extends Model {
     public int getTotalspots(){return totalspots;}
 
     public String getCurrentOpenSpots() {
-        return "Open spots: " + this.getNumberOfOpenSpots() + "/" + (this.getNumberOfRows() * this.getNumberOfPlaces());
+        return "spots: " + this.getNumberOfOpenSpots() + "/" + (this.getNumberOfRows() * this.getNumberOfPlaces());
     }
+
+    public int returntotal(){return this.getNumberOfRows() * this.getNumberOfPlaces();}
 
     public FloorType getType() {
         return this.type;

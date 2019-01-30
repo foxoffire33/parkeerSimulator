@@ -85,7 +85,7 @@ public class FloorController extends Controller {
         int totaal = 0;
 
         for (FloorModel model : this.models) {
-            totaal = totaal + model.getTotalspots();
+            totaal = model.returntotal();
         }
         return totaal;
     }
