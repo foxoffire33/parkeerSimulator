@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="511.0" y="1691.0">nl.hanze.Windows.StatusBar</node>
+    <node x="1294.0" y="1396.0">nl.hanze.Location</node>
+    <node x="841.0" y="1396.0">nl.hanze.Windows.SimulatorStart</node>
+    <node x="259.0" y="1396.0">nl.hanze.Windows.InformationPanel</node>
+    <node x="817.5" y="0.0">nl.hanze.cars.Car</node>
+    <node x="556.0" y="1497.0">nl.hanze.views.sumulator.floor.FloorViewIndex</node>
+    <node x="0.0" y="1396.0">nl.hanze.Main</node>
+    <node x="689.0" y="1691.0">nl.hanze.Windows.MyMenuBar</node>
+    <node x="1070.0" y="1396.0">nl.hanze.CarQueue</node>
+    <node x="839.0" y="346.0">nl.hanze.cars.AdHocCar</node>
+    <node x="1040.0" y="346.0">nl.hanze.cars.ParkingPassCar</node>
+    <node x="0.0" y="0.0">nl.hanze.Simulator</node>
+    <node x="0.0" y="1691.0">nl.hanze.enums.FloorType</node>
+    <node x="415.0" y="0.0">nl.hanze.mvc.Model</node>
+    <node x="624.0" y="346.0">nl.hanze.cars.ParkingReserveredCar</node>
+    <node x="1566.0" y="0.0">nl.hanze.Windows.MainWindow</node>
+    <node x="1531.0" y="1396.0">nl.hanze.database.MysqlConnection</node>
+    <node x="556.0" y="1396.0">nl.hanze.mvc.View</node>
+    <node x="1266.0" y="79.0">nl.hanze.controllers.FloorController</node>
+    <node x="218.0" y="1691.0">nl.hanze.Windows.LagendaBar</node>
+    <node x="1343.0" y="0.0">nl.hanze.mvc.Controller</node>
+    <node x="333.0" y="79.0">nl.hanze.models.FloorModel</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="nl.hanze.views.sumulator.floor.FloorViewIndex" target="nl.hanze.mvc.View">
+      <point x="0.0" y="-59.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="nl.hanze.models.FloorModel" target="nl.hanze.mvc.Model">
+      <point x="0.0" y="-225.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="nl.hanze.controllers.FloorController" target="nl.hanze.mvc.Controller">
+      <point x="0.0" y="-158.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="nl.hanze.cars.ParkingPassCar" target="nl.hanze.cars.Car">
+      <point x="0.0" y="-82.0" />
+      <point x="1130.5" y="321.0" />
+      <point x="1004.1666666666667" y="321.0" />
+      <point x="74.66666666666674" y="148.0" />
+    </edge>
+    <edge source="nl.hanze.cars.ParkingReserveredCar" target="nl.hanze.cars.Car">
+      <point x="0.0" y="-82.0" />
+      <point x="721.5" y="321.0" />
+      <point x="854.8333333333334" y="321.0" />
+      <point x="-74.66666666666663" y="148.0" />
+    </edge>
+    <edge source="nl.hanze.cars.AdHocCar" target="nl.hanze.cars.Car">
+      <point x="0.0" y="-82.0" />
+      <point x="0.0" y="148.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8" x="2186.5848214285716" y="570.9604595843996" />
+  <SelectedNodes>
+    <node>nl.hanze.Windows.StatusBar</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
