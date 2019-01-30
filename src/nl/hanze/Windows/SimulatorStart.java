@@ -21,8 +21,8 @@ public class SimulatorStart extends JFrame {
         lblName.setBounds(65, 31, 600, 14);
         this.getContentPane().add(lblName);
 
-        textField = new JTextField();
-        textField.setBounds(300, 31, 25, 20);
+        textField = new JTextField("" + MainWindow.membersRows);
+        textField.setBounds(300, 31, 35, 20);
         this.getContentPane().add(textField);
         textField.setColumns(10);
 
@@ -30,8 +30,8 @@ public class SimulatorStart extends JFrame {
         lblName2.setBounds(65, 51, 600, 14);
         this.getContentPane().add(lblName2);
 
-        textField2 = new JTextField();
-        textField2.setBounds(300, 51, 25, 20);
+        textField2 = new JTextField("" + MainWindow.noneRows);
+        textField2.setBounds(300, 51, 35, 20);
         this.getContentPane().add(textField2);
         textField2.setColumns(10);
 
@@ -40,8 +40,8 @@ public class SimulatorStart extends JFrame {
         this.getContentPane().add(lblName3);
 
 
-        this.textField3 = new JTextField();
-        this.textField3.setBounds(300, 71, 25, 20);
+        this.textField3 = new JTextField("" + MainWindow.reservationRows);
+        this.textField3.setBounds(300, 71, 35, 20);
         this.getContentPane().add(this.textField3);
         this.textField3.setColumns(10);
 
@@ -49,8 +49,8 @@ public class SimulatorStart extends JFrame {
         label4.setBounds(65, 91, 600, 14);
         this.add(label4);
 
-        textField4 = new JTextField();
-        textField4.setBounds(300, 91, 25, 20);
+        textField4 = new JTextField("" + ParkingPassCar.getPrice());
+        textField4.setBounds(300, 91, 35, 20);
         this.getContentPane().add(textField4);
         textField4.setColumns(10);
 
@@ -59,8 +59,8 @@ public class SimulatorStart extends JFrame {
         this.getContentPane().add(lblName5);
 
 
-        this.textField5 = new JTextField();
-        this.textField5.setBounds(300, 111, 25, 20);
+        this.textField5 = new JTextField("" + AdHocCar.getPrice());
+        this.textField5.setBounds(300, 111, 35, 20);
         this.getContentPane().add(this.textField5);
         this.textField5.setColumns(10);
 
@@ -68,8 +68,8 @@ public class SimulatorStart extends JFrame {
         label6.setBounds(65, 131, 600, 14);
         this.add(label6);
 
-        this.textField6 = new JTextField();
-        this.textField6.setBounds(300, 131, 25, 20);
+        this.textField6 = new JTextField("" + ParkingReserveredCar.getPrice());
+        this.textField6.setBounds(300, 131, 35, 20);
         this.getContentPane().add(this.textField6);
         this.textField6.setColumns(10);
 
@@ -91,8 +91,8 @@ public class SimulatorStart extends JFrame {
 
     private void changeSettings() {
         try {
-            MainWindow.membersRows = Integer.parseInt(this.textField2.getText());
-            MainWindow.noneRows = Integer.parseInt(this.textField.getText());
+            MainWindow.membersRows = Integer.parseInt(this.textField.getText());
+            MainWindow.noneRows = Integer.parseInt(this.textField2.getText());
             MainWindow.reservationRows = Integer.parseInt(this.textField3.getText());
 
             ParkingPassCar.setPrice(Double.parseDouble(this.textField4.getText().replace(',', '.')));
@@ -100,7 +100,7 @@ public class SimulatorStart extends JFrame {
             ParkingReserveredCar.setPrice(Double.parseDouble(this.textField3.getText().replace(',', '.')));
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Het formulier is niet correct ingevuld!!", "Error" , 0);
+            JOptionPane.showMessageDialog(this, "Het formulier is niet correct ingevuld!!", "Error", 0);
             return;
         }
 

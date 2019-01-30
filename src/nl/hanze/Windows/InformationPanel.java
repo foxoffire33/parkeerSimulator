@@ -16,9 +16,6 @@ public class InformationPanel extends JPanel {
         JPanel informationPanel = new JPanel();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-
-
-
         InformationPanel.quene1 = new JLabel("Totaal spots: " + controller.getNumberOfOpenSpots());
         this.add(InformationPanel.quene1);
 
@@ -42,6 +39,7 @@ public class InformationPanel extends JPanel {
 
         setVisible(true);
 
-        informationPanel.setMaximumSize(new Dimension(100, 100));
+        informationPanel.setMinimumSize(new Dimension(250,500));
+        informationPanel.setPreferredSize(new Dimension(100, 100));
     }
 }
