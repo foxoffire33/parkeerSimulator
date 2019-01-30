@@ -81,6 +81,15 @@ public class FloorController extends Controller {
         return totaal;
     }
 
+    public int getNumberOfSpots() {
+        int totaal = 0;
+
+        for (FloorModel model : this.models) {
+            totaal = totaal + model.getTotalspots();
+        }
+        return totaal;
+    }
+
     public Car getFirstLeavingCar() {
 
         for (FloorModel model : this.models) {
