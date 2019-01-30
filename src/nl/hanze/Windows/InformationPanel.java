@@ -108,23 +108,6 @@ public class InformationPanel extends JPanel {
         InformationPanel.loss6 = new JLabel();
         this.add(InformationPanel.loss6);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         setVisible(true);
 
         informationPanel.setMinimumSize(new Dimension(250,500));
