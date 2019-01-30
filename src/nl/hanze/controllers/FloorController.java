@@ -112,13 +112,4 @@ public class FloorController extends Controller {
         }
     }
 
-    public int getNumberOfSpots() {
-        int totaal = 0;
-
-        for (FloorModel model : this.models) {
-            totaal = totaal + model.getTotalspots();
-        }
-        return totaal;
-    }
-
 }

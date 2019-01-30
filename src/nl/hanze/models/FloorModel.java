@@ -13,7 +13,6 @@ public class FloorModel extends Model {
     private int totalspots = numberOfPlaces * numberOfRows;
     private int numberOfOpenSpots;
     private Car[][] cars;
-    private int totalspots = numberOfPlaces * numberOfRows;
 
 
     public void reset() {
@@ -154,7 +153,5 @@ public class FloorModel extends Model {
         }
         return null;
     }
-
-    public int getTotalspots(){return totalspots;}
 
 }
