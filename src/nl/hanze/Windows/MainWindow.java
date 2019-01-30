@@ -29,6 +29,7 @@ public class MainWindow extends JFrame {
 
         Container container = this.getContentPane();
         container = new Container();
+        this.add(new LagendaBar(),BorderLayout.NORTH);
 
         floorController = getFloorController();
 
