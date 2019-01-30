@@ -58,6 +58,8 @@ public class MainWindow extends JFrame {
         Main.label7 = new JLabel("Reservations none: " + floorController.getNumberOfOpenSpots());
         informationPanel.add(Main.label3);
 
+        Main.label8  = new JLabel();
+
         informationPanel.add(this.quene1);
         informationPanel.add(this.quene2);
         informationPanel.add(this.quene3);

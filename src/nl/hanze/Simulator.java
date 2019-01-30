@@ -51,6 +51,7 @@ public class Simulator implements Runnable {
     private double membersWinst = 0;
     private double overigeWinst = 0;
     private double reserverdWinst = 0;
+    private double totaleWinst = 0;
 
     private int membersLevingQenue = 0;
     private int noneLevingQenue = 0;
@@ -62,6 +63,8 @@ public class Simulator implements Runnable {
     private int orWeekendArrivals = weekendArrivals;
     private int orWeekdayPassArrivals = weekDayPassArrivals;
     private int orWeekendPassArrivals = weekendPassArrivals;
+    private boolean offtime = false;
+    private boolean busyDay = false;
 
     private int enterSpeed = 3; // number of cars that can enter per minute
     private int paymentSpeed = 7; // number of cars that can pay per minute
@@ -171,7 +174,7 @@ public class Simulator implements Runnable {
 
     private void tick() {
         advanceTime();
-        checkTime();
+    //    checkTime();
         handleExit();
         getReserved();
         updateViews();
@@ -279,21 +282,21 @@ public class Simulator implements Runnable {
         this.mainWindow.repaint();
         this.mainWindow.revalidate();
 
-
-        Main.label1.setText("Number of open spots: " + floorController.getNumberOfOpenSpots());
-        Main.label2.setText("Member spots: " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
-        Main.label3.setText("Total spots none: " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
-        Main.label4.setText("Total spots reservered: " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        Main.label1.setText("Total amount of free spots: " + floorController.getNumberOfOpenSpots() + "/" + floorController.getNumberOfSpots() );
+        Main.label2.setText("Member " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
+        Main.label3.setText("Non-Member " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
+        Main.label4.setText("Reserved " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
+        Main.label5.setText("Winst van Non-Members: €" + overigeWinst);
+        Main.label6.setText("Winst van Members: €" + membersWinst);
+        Main.label7.setText("Winst van Reserveerders: €" + reserverdWinst);
+        Main.label8.setText("Totale winst: €" + totaleWinst);
 
         this.mainWindow.quene1.setText("Queue members:" + this.entrancePassQueue.carsInQueue());
         this.mainWindow.quene2.setText("Queue reservered:" + this.entranceReserveredQueue.carsInQueue());
         this.mainWindow.quene3.setText("Pass members:" + this.entranceCarQueue.carsInQueue());
 
-        Main.label5.setText("Mem lived: " + this.membersLevingQenue);
-        Main.label6.setText("None lived: " + this.noneLevingQenue);
-        Main.label7.setText("Reservations none: " + this.reserverdLevingQenue);
+        this.mainWindow.quene4.setText("Cars left: " + this.carsOutQenue);
 
-        this.mainWindow.quene4.setText("Cars laved : " + this.carsOutQenue);
 
 
         Date date = new Date();

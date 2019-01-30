@@ -12,7 +12,8 @@ public class FloorModel extends Model {
     private int numberOfPlaces = 30;
     private int numberOfOpenSpots;
     private Car[][] cars;
-    ;
+    private int totalspots = numberOfPlaces * numberOfRows;
+
 
     public void reset() {
         this.initCarsArray(this.numberOfRows, this.numberOfPlaces);
@@ -150,5 +151,7 @@ public class FloorModel extends Model {
         }
         return null;
     }
+
+    public int getTotalspots(){return totalspots;}
 
 }
