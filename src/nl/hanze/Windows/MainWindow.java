@@ -19,6 +19,8 @@ public class MainWindow extends JFrame {
     public static int noneRows = 6;
     public static int reservationRows = 4;
 
+    public Simulator simulator;
+
     public StatusBar statusBar;
     private static FloorController floorController;
 
@@ -39,36 +41,40 @@ public class MainWindow extends JFrame {
         panel.setLayout(boxLayout);
         JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_MENBER),BorderLayout.WEST);
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_NONE),BorderLayout.CENTER);
-        panel.add(floorController.getView(FloorType.FLOOR_TYPE_RESAVERED),BorderLayout.EAST);
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_MENBER), BorderLayout.WEST);
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_NONE), BorderLayout.CENTER);
+        panel.add(floorController.getView(FloorType.FLOOR_TYPE_RESAVERED), BorderLayout.EAST);
 
-        scrollPane.getViewport().addChangeListener((e) -> { this.repaint(); } );
+        scrollPane.getViewport().addChangeListener((e) -> {
+            this.repaint();
+        });
 
-        container.add(scrollPane,BorderLayout.EAST);
+        container.add(scrollPane, BorderLayout.EAST);
         InformationPanel informationPanel = new InformationPanel(floorController);
-        container.add(informationPanel,BorderLayout.WEST);
+        container.add(informationPanel, BorderLayout.WEST);
 
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-        scrollPane.setMinimumSize(new Dimension(600,500));
+        scrollPane.setMinimumSize(new Dimension(250, 500));
+        scrollPane.setPreferredSize(new Dimension(600, 500));
         p.add(scrollPane);
         p.add(informationPanel);
         this.add(p);
 
         setSize(800, 600);
+        setMinimumSize(new Dimension(500, 500));
 
         this.statusBar = new StatusBar();
         this.getContentPane().add(this.statusBar, java.awt.BorderLayout.SOUTH);
         this.setVisible(true);
 
-        Simulator simulator = new Simulator(floorController, this);
-        simulator.run();
+        this.simulator = new Simulator(floorController,this);
+        this.simulator.run();
 
     }
 
     public static Simulator startSimulator(MainWindow frame) {
-        Simulator simulator = new Simulator(MainWindow.getFloorController(), frame);
+        Simulator simulator = new Simulator(MainWindow.getFloorController(),frame);
         return simulator;
     }
 
