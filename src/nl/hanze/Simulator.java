@@ -388,7 +388,7 @@ public class Simulator implements Runnable {
         InformationPanel.queue2.setText("Queueleaving members: " + membersLevingQenue);
         InformationPanel.queue3.setText("Queueleaving reserveers: " + reserverdLevingQenue);
         //space 2
-        InformationPanel.title6.setText("            PROFIT");
+        InformationPanel.title6.setText("             PROFIT");
         InformationPanel.profitg.setText("Profit regulars: €" + overigeWinst);
         InformationPanel.profitm.setText("Profit members: €" + membersWinst);
         InformationPanel.profitr.setText("Profit reserveers: €" + reserverdWinst);
@@ -401,20 +401,20 @@ public class Simulator implements Runnable {
         InformationPanel.dubble4.setText("D-Parked reserveers: " + dubbelParkReserved);
         InformationPanel.dubble4.setText("D-Parked since start: " + dubbelParkAll);
         //space 4
-        InformationPanel.title1.setText("PROFIT LOSS Q-LEAVING");
-        InformationPanel.loss1.setText("Loss regulars: €" + verlorenqueuewinstOverig + "-");
-        InformationPanel.loss2.setText("Loss members: €" + verlorenqueuewinstMembers+"-");
-        InformationPanel.loss3.setText("Loss reserveers: €" + verlorenqueuewinstReserved+"-");
+        InformationPanel.title1.setText(" PROFIT LOSS Q-LEAVING");
+        InformationPanel.loss1.setText("Loss regulars:      €" + verlorenqueuewinstOverig + "-");
+        InformationPanel.loss2.setText("Loss members:    €" + verlorenqueuewinstMembers+"-");
+        InformationPanel.loss3.setText("Loss reserveers:  €" + verlorenqueuewinstReserved+"-");
         InformationPanel.loss4.setText("Total queue Loss: €" + verlorenqueuewinsttotaal + "-");
 
         InformationPanel.space5.setText(" ");
 
-        InformationPanel.title2.setText("PROFIT LOSS D-PARKING");
+        InformationPanel.title2.setText(" PROFIT LOSS D-PARKING");
         InformationPanel.loss5.setText("                 €" + verlorenwinstdubbel + "-");
 
         InformationPanel.space6.setText(" ");
-        InformationPanel.title3.setText("TOTAL PROFIT LOST");
-        InformationPanel.loss6.setText("             €" + verlorenwinsttotaal + "-");
+        InformationPanel.title3.setText("   TOTAL PROFIT LOST");
+        InformationPanel.loss6.setText("               €" + verlorenwinsttotaal + "-");
 
 
         Date date = new Date();
