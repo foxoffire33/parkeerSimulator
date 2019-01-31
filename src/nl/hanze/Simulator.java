@@ -29,16 +29,15 @@ public class Simulator implements Runnable {
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
-    private CarQueue entranceReserveredQueue;
+    public static CarQueue entranceReserveredQueue;
     private CarQueue exitCarQueue;
     private FloorController floorController;
 
 
-
     private int timescale = 1;
-    private int day = 5;
-    private int hour = 0;
-    private int minute = 0;
+    public static int day = 5;
+    public static int hour = 0;
+    public static int minute = 0;
 
     private int tickPause = 100;
 
@@ -138,15 +137,10 @@ public class Simulator implements Runnable {
 
     public void getReserved() {
         if (this.minute == 1) {
-            MysqlConnection mysql = new MysqlConnection();
-            if (mysql.isDbConnected()) {
-                ArrayList<ParkingReserveredCar> ir = mysql.reservations(this.hour);
-                if (!ir.isEmpty()) {
-                    for (ParkingReserveredCar model : ir) {
-                        this.entranceReserveredQueue.addCar(model);
-                    }
-                }
-            }
+            GetReserveredThread reserveredThread = new GetReserveredThread();
+            Thread thread = new Thread(reserveredThread);
+            thread.start();
+            this.entranceReserveredQueue = reserveredThread.getCarQueue();
         }
     }
 
@@ -178,10 +172,10 @@ public class Simulator implements Runnable {
 
         this.verlorenqueuewinstOverig = 0;
         this.verlorenqueuewinstMembers = 0;
-        this.verlorenqueuewinstReserved = 0 ;
+        this.verlorenqueuewinstReserved = 0;
         this.verlorenqueuewinsttotaal = 0;
         this.verlorenwinstdubbel = 0;
-        this.verlorenwinsttotaal = 0 ;
+        this.verlorenwinsttotaal = 0;
 
 
         this.hour = 0;
@@ -241,15 +235,16 @@ public class Simulator implements Runnable {
             if (this.hour == 18) {
                 weekDayArrivals = orWeekdayArrivals + 67;
                 weekendArrivals = orWeekendArrivals + 137;
-                weekDayPassArrivals = orWeekdayPassArrivals + 26 ;
-                weekendPassArrivals = orWeekendPassArrivals + 20 ;
-                offtime = false;}
+                weekDayPassArrivals = orWeekdayPassArrivals + 26;
+                weekendPassArrivals = orWeekendPassArrivals + 20;
+                offtime = false;
+            }
 
             if (this.hour == 22) {
                 weekDayArrivals = orWeekdayArrivals;
                 weekendArrivals = orWeekendArrivals;
                 weekDayPassArrivals = orWeekdayPassArrivals;
-                weekendPassArrivals = orWeekendPassArrivals ;
+                weekendPassArrivals = orWeekendPassArrivals;
             }
 
         }
@@ -260,25 +255,28 @@ public class Simulator implements Runnable {
             if (this.hour == 12) {
                 weekDayArrivals = orWeekdayArrivals + 67;
                 weekendArrivals = orWeekendArrivals + 137;
-                weekDayPassArrivals = orWeekdayPassArrivals + 26 ;
-                weekendPassArrivals = orWeekendPassArrivals + 20 ;
-                offtime = false;}
+                weekDayPassArrivals = orWeekdayPassArrivals + 26;
+                weekendPassArrivals = orWeekendPassArrivals + 20;
+                offtime = false;
+            }
 
             if (this.hour == 17) {
                 weekDayArrivals = orWeekdayArrivals;
-                weekendArrivals = orWeekendArrivals ;
+                weekendArrivals = orWeekendArrivals;
                 weekDayPassArrivals = orWeekdayPassArrivals;
-                weekendPassArrivals = orWeekendPassArrivals ;
-                }
+                weekendPassArrivals = orWeekendPassArrivals;
+            }
 
 
         }
     }
+
     //functie die kijkt of het een "off time" is
-    private String checkOfftime()
-    {
-        if (offtime){return " (Offtime: 50% Less visitors!) ";}
-        return " (No offtime)" ;
+    private String checkOfftime() {
+        if (offtime) {
+            return " (Offtime: 50% Less visitors!) ";
+        }
+        return " (No offtime)";
     }
 
     //functie die kijkt of het een drukke dag is
@@ -297,7 +295,6 @@ public class Simulator implements Runnable {
         }
         return " (No busyday today)";
     }
-
 
 
     private void advanceTime() {
@@ -369,13 +366,13 @@ public class Simulator implements Runnable {
 //
 //        this.mainWindow.quene4.setText("Cars left: " + this.carsOutQenue);
 
-        int totalSpots = floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).returntotal() ;
+        int totalSpots = floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).returntotal();
         totalSpots += floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).returntotal();
         totalSpots += floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).returntotal();
 
         verlorenqueuewinstOverig = (noneLevingQenue * ParkingPassCar.getPrice());
         verlorenqueuewinstMembers = (membersLevingQenue * AdHocCar.getPrice());
-        verlorenqueuewinstReserved  = (reserverdLevingQenue * ParkingReserveredCar.getPrice());
+        verlorenqueuewinstReserved = (reserverdLevingQenue * ParkingReserveredCar.getPrice());
 
         InformationPanel.title4.setText("          FREE SPOTS");
         InformationPanel.spots1.setText("Total free spots: " + floorController.getNumberOfOpenSpots() + "/" + totalSpots);
@@ -468,9 +465,33 @@ public class Simulator implements Runnable {
                 if (deubelParkeren == 1) {
                     freeLocation = model.getFirstFreeLocation();
                     Car clone = null;
-                  if (car instanceof AdHocCar){clone = new AdHocCar();dubbelParkAll ++; System.out.println("Een member heeft dubbelgeparkeerd."); membersWinst -= AdHocCar.getPrice(); totaleWinst -= AdHocCar.getPrice(); dubbelParkMember ++; verlorenwinstdubbel += AdHocCar.getPrice();}
-                  if (car instanceof ParkingPassCar){clone = new ParkingPassCar();dubbelParkAll ++; System.out.println("Een overige parkeerder heeft dubbelgeparkeerd."); overigeWinst -= ParkingPassCar.getPrice(); totaleWinst -= ParkingPassCar.getPrice(); dubbelParkOverige ++; verlorenwinstdubbel += ParkingPassCar.getPrice();}
-                  if (car instanceof ParkingReserveredCar){clone = new ParkingReserveredCar();dubbelParkAll ++; System.out.println("Een reserveerder heeft dubbelgeparkeerd."); reserverdWinst -= ParkingReserveredCar.getPrice();totaleWinst -= ParkingReserveredCar.getPrice();dubbelParkReserved ++; verlorenwinstdubbel += ParkingReserveredCar.getPrice(); }
+                    if (car instanceof AdHocCar) {
+                        clone = new AdHocCar();
+                        dubbelParkAll++;
+                        System.out.println("Een member heeft dubbelgeparkeerd.");
+                        membersWinst -= AdHocCar.getPrice();
+                        totaleWinst -= AdHocCar.getPrice();
+                        dubbelParkMember++;
+                        verlorenwinstdubbel += AdHocCar.getPrice();
+                    }
+                    if (car instanceof ParkingPassCar) {
+                        clone = new ParkingPassCar();
+                        dubbelParkAll++;
+                        System.out.println("Een overige parkeerder heeft dubbelgeparkeerd.");
+                        overigeWinst -= ParkingPassCar.getPrice();
+                        totaleWinst -= ParkingPassCar.getPrice();
+                        dubbelParkOverige++;
+                        verlorenwinstdubbel += ParkingPassCar.getPrice();
+                    }
+                    if (car instanceof ParkingReserveredCar) {
+                        clone = new ParkingReserveredCar();
+                        dubbelParkAll++;
+                        System.out.println("Een reserveerder heeft dubbelgeparkeerd.");
+                        reserverdWinst -= ParkingReserveredCar.getPrice();
+                        totaleWinst -= ParkingReserveredCar.getPrice();
+                        dubbelParkReserved++;
+                        verlorenwinstdubbel += ParkingReserveredCar.getPrice();
+                    }
                     clone.setDubelParkeren(true);
                     model.setCarAt(freeLocation, clone);
                     this.dubbelParkTotaal++;
@@ -496,10 +517,14 @@ public class Simulator implements Runnable {
                 car.setIsPaying(true);
                 paymentCarQueue.addCar(car);
             } else {
-                if (car instanceof ParkingPassCar) {overigeWinst += ((ParkingPassCar) car).getPrice();
-                    totaleWinst += ((ParkingPassCar) car).getPrice();}
-                if (car instanceof ParkingReserveredCar) {reserverdWinst += ((ParkingReserveredCar) car).getPrice();
-                    totaleWinst += ((ParkingReserveredCar) car).getPrice();}
+                if (car instanceof ParkingPassCar) {
+                    overigeWinst += ((ParkingPassCar) car).getPrice();
+                    totaleWinst += ((ParkingPassCar) car).getPrice();
+                }
+                if (car instanceof ParkingReserveredCar) {
+                    reserverdWinst += ((ParkingReserveredCar) car).getPrice();
+                    totaleWinst += ((ParkingReserveredCar) car).getPrice();
+                }
 
                 carLeavesSpot(car);
             }
@@ -514,8 +539,10 @@ public class Simulator implements Runnable {
             Car car = paymentCarQueue.removeCar();
 
 
-            if (car instanceof AdHocCar) {membersWinst += ((AdHocCar) car).getPrice();
-                totaleWinst += ((AdHocCar) car).getPrice();}
+            if (car instanceof AdHocCar) {
+                membersWinst += ((AdHocCar) car).getPrice();
+                totaleWinst += ((AdHocCar) car).getPrice();
+            }
 
             carLeavesSpot(car);
             i++;
@@ -584,9 +611,15 @@ public class Simulator implements Runnable {
             if (car2 != null) {
                 model.removeCarAt(car2.getLocation());
                 this.dubbelParkTotaal--;
-                if (car instanceof AdHocCar){dubbelParkMember --;}
-                if (car instanceof ParkingPassCar){dubbelParkOverige --;}
-                if (car instanceof ParkingReserveredCar){dubbelParkReserved --;}
+                if (car instanceof AdHocCar) {
+                    dubbelParkMember--;
+                }
+                if (car instanceof ParkingPassCar) {
+                    dubbelParkOverige--;
+                }
+                if (car instanceof ParkingReserveredCar) {
+                    dubbelParkReserved--;
+                }
 
             }
         }
