@@ -35,7 +35,7 @@ public class Simulator implements Runnable {
 
 
     private int timescale = 1;
-    public static int day = 5;
+    public static int day = 0;
     public static int hour = 0;
     public static int minute = 0;
 
