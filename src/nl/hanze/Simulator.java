@@ -36,7 +36,7 @@ public class Simulator implements Runnable {
 
 
     private int timescale = 1;
-    private int day = 0;
+    private int day = 5;
     private int hour = 0;
     private int minute = 0;
 
@@ -373,28 +373,28 @@ public class Simulator implements Runnable {
         totalSpots += floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).returntotal();
         totalSpots += floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).returntotal();
 
-        verlorenqueuewinstOverig += (noneLevingQenue * ParkingPassCar.getPrice());
-        verlorenqueuewinstMembers += (membersLevingQenue * AdHocCar.getPrice());
-        verlorenqueuewinstReserved += (reserverdLevingQenue * ParkingReserveredCar.getPrice());
+        verlorenqueuewinstOverig = (noneLevingQenue * ParkingPassCar.getPrice());
+        verlorenqueuewinstMembers = (membersLevingQenue * AdHocCar.getPrice());
+        verlorenqueuewinstReserved  = (reserverdLevingQenue * ParkingReserveredCar.getPrice());
 
-        InformationPanel.title4.setText("FREE SPOTS");
-        InformationPanel.spots1.setText("Total free spots " + floorController.getNumberOfOpenSpots() + "/" + totalSpots);
+        InformationPanel.title4.setText("          FREE SPOTS");
+        InformationPanel.spots1.setText("Total free spots: " + floorController.getNumberOfOpenSpots() + "/" + totalSpots);
         InformationPanel.spots2.setText("Member " + floorController.getModel(FloorType.FLOOR_TYPE_MENBER.getValue()).getCurrentOpenSpots());
         InformationPanel.spots3.setText("Generic " + floorController.getModel(FloorType.FLOOR_TYPE_NONE.getValue()).getCurrentOpenSpots());
         InformationPanel.spots4.setText("Reserved " + floorController.getModel(FloorType.FLOOR_TYPE_RESAVERED.getValue()).getCurrentOpenSpots());
         InformationPanel.space1.setText(" ");
-        InformationPanel.title5.setText("QUEUE LEAVING");
+        InformationPanel.title5.setText("       QUEUE LEAVING");
         InformationPanel.queue1.setText("Queueleaving regulars: " + noneLevingQenue);
         InformationPanel.queue2.setText("Queueleaving members: " + membersLevingQenue);
         InformationPanel.queue3.setText("Queueleaving reserveers: " + reserverdLevingQenue);
         //space 2
-        InformationPanel.title6.setText("PROFIT");
+        InformationPanel.title6.setText("            PROFIT");
         InformationPanel.profitg.setText("Profit regulars: €" + overigeWinst);
         InformationPanel.profitm.setText("Profit members: €" + membersWinst);
         InformationPanel.profitr.setText("Profit reserveers: €" + reserverdWinst);
-        InformationPanel.profitT.setText("Total profit: €" + totaleWinst);
+        InformationPanel.profitT.setText("Total Profit: €" + totaleWinst);
         //space3
-        InformationPanel.title7.setText("DOUBLE PARKING");
+        InformationPanel.title7.setText("     DOUBLE PARKING");
         InformationPanel.dubble1.setText("D-parked total: " + dubbelParkTotaal);
         InformationPanel.dubble2.setText("D-parked members: " + dubbelParkMember);
         InformationPanel.dubble3.setText("D-Parked regulars: " + dubbelParkOverige);
@@ -415,14 +415,6 @@ public class Simulator implements Runnable {
         InformationPanel.space6.setText(" ");
         InformationPanel.title3.setText("TOTAL PROFIT LOST");
         InformationPanel.loss6.setText("             €" + verlorenwinsttotaal + "-");
-
-
-
-
-
-
-
-
 
 
         Date date = new Date();
@@ -472,7 +464,7 @@ public class Simulator implements Runnable {
                 Location freeLocation = model.getFirstFreeLocation();
                 model.setCarAt(freeLocation, car);
 
-                int deubelParkeren = (int) (Math.random() * 50 + 1);
+                int deubelParkeren = (int) (Math.random() * 60 + 1);
                 if (deubelParkeren == 1) {
                     freeLocation = model.getFirstFreeLocation();
                     Car clone = null;
@@ -559,7 +551,7 @@ public class Simulator implements Runnable {
                     entranceCarQueue.addCar(new AdHocCar());
                     if (!this.entrancePassQueue.addCar(new AdHocCar())) {
                         this.membersLevingQenue++;
-                        this.verlorenqueuewinstMembers += AdHocCar.price;
+
                     }
                 }
                 break;
@@ -567,7 +559,7 @@ public class Simulator implements Runnable {
                 for (int i = 0; i < numberOfCars; i++) {
                     if (!this.entranceCarQueue.addCar(new ParkingPassCar())) {
                         this.noneLevingQenue++;
-                        this.verlorenqueuewinstOverig += ParkingPassCar.price;
+
                     }
                 }
                 break;
@@ -575,7 +567,7 @@ public class Simulator implements Runnable {
                 for (int i = 0; i < numberOfCars; i++) {
                     if (!this.entranceReserveredQueue.addCar(new ParkingReserveredCar())) {
                         this.reserverdLevingQenue++;
-                        this.verlorenqueuewinstReserved += ParkingReserveredCar.price;
+
                     }
                 }
                 break;

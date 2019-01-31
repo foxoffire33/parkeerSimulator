@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class
 ParkingPassCar extends Car {
-    public static double price = 30;
+    public static double price = 1;
 	private static final Color COLOR=Color.blue;
 	
     public ParkingPassCar() {
