@@ -16,7 +16,7 @@ public class GetReserveredThread implements Runnable {
             ArrayList<ParkingReserveredCar> ir = mysql.reservations(Simulator.hour);
             if (!ir.isEmpty()) {
                 for (ParkingReserveredCar model : ir) {
-                    this.carQueue.addCar(model);
+                    Simulator.entranceReserveredQueue.addCar(model);
                 }
             }
         }

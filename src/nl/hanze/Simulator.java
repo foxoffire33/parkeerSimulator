@@ -29,7 +29,7 @@ public class Simulator implements Runnable {
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
-    private CarQueue entranceReserveredQueue;
+    public static CarQueue entranceReserveredQueue;
     private CarQueue exitCarQueue;
     private FloorController floorController;
 
@@ -140,7 +140,7 @@ public class Simulator implements Runnable {
             GetReserveredThread reserveredThread = new GetReserveredThread();
             Thread thread = new Thread(reserveredThread);
             thread.start();
-          //  this.entranceReserveredQueue = reserveredThread.getCarQueue();
+            this.entranceReserveredQueue = reserveredThread.getCarQueue();
         }
     }
 
